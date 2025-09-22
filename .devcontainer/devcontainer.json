@@ -1,0 +1,25 @@
+{
+  "name": "FHIR IG Training",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "runner",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "overrideCommand": true,
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.vscode-yaml",
+        "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+        "ms-vscode.vscode-json",
+        "streetsidesoftware.code-spell-checker",
+        "mhutchie.git-graph"
+      ]
+    }
+  },
+  "postCreateCommand": "echo 'Devcontainer ready. IG skeleton already present.'"
+}

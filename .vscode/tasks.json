@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "SUSHI: Build FSH",
+      "type": "shell",
+      "command": "sushi",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "IG Publisher: Full Build",
+      "type": "shell",
+      "command": "./_genonce.sh",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": "SUSHI: Build FSH",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Update IG Publisher",
+      "type": "shell",
+      "command": "./_updatePublisher.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
