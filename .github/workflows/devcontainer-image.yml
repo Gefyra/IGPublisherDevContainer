@@ -15,24 +15,30 @@ permissions:
   packages: write
 
 env:
-  REGISTRY_IMAGE: ghcr.io/${{ toLower(github.repository_owner) }}/igpublisher-devcontainer
+  REGISTRY_IMAGE: ghcr.io/${{ github.repository_owner }}/igpublisher-devcontainer
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+      - name: Compute image name
+        id: image
+        run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "registry=ghcr.io/$owner/igpublisher-devcontainer" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v4
 
       - name: Log in to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Build devcontainer image
-        run: docker build -t $REGISTRY_IMAGE:latest -f .devcontainer/Dockerfile .
+        run: docker build -t ${{ steps.image.outputs.registry }}:latest -f .devcontainer/Dockerfile .
 
       - name: Determine SUSHI version
         id: sushi
         run: |
-          version=$(docker run --rm --entrypoint sushi $REGISTRY_IMAGE:latest --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+          version=$(docker run --rm --entrypoint sushi ${{ steps.image.outputs.registry }}:latest --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
           if [ -z "$version" ]; then
             echo "Unable to detect SUSHI version" >&2
             exit 1
@@ -43,6 +49,7 @@ jobs:
         env:
           VERSION: ${{ steps.sushi.outputs.version }}
         run: |
-          docker push $REGISTRY_IMAGE:latest
-          docker tag $REGISTRY_IMAGE:latest $REGISTRY_IMAGE:sushi-$VERSION
-          docker push $REGISTRY_IMAGE:sushi-$VERSION
+          IMAGE=${{ steps.image.outputs.registry }}
+          docker push $IMAGE:latest
+          docker tag $IMAGE:latest $IMAGE:sushi-$VERSION
+          docker push $IMAGE:sushi-$VERSION
