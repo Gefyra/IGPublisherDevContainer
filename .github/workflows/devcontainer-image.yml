@@ -1,0 +1,48 @@
+name: Build Devcontainer Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .devcontainer/**
+      - .github/workflows/devcontainer-image.yml
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY_IMAGE: ghcr.io/${{ github.repository_owner }}/igpublisher-devcontainer
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
+      - name: Build devcontainer image
+        run: docker build -t $REGISTRY_IMAGE:latest -f .devcontainer/Dockerfile .
+
+      - name: Determine SUSHI version
+        id: sushi
+        run: |
+          version=$(docker run --rm --entrypoint sushi $REGISTRY_IMAGE:latest --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+          if [ -z "$version" ]; then
+            echo "Unable to detect SUSHI version" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Push image tags
+        env:
+          VERSION: ${{ steps.sushi.outputs.version }}
+        run: |
+          docker push $REGISTRY_IMAGE:latest
+          docker tag $REGISTRY_IMAGE:latest $REGISTRY_IMAGE:sushi-$VERSION
+          docker push $REGISTRY_IMAGE:sushi-$VERSION

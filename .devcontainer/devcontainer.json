@@ -1,8 +1,6 @@
 {
   "name": "FHIR IG Generator Dev Container",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "image": "ghcr.io/patrickwerner/igpublisher-devcontainer:latest",
   "remoteUser": "runner",
   "updateRemoteUserUID": true,
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
