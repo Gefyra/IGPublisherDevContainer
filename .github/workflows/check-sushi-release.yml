@@ -38,21 +38,39 @@ jobs:
         id: decision
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OWNER: ${{ github.repository_owner }}
+          OWNER: ${{ github.repository_owner }}   # z.B. Gefyra
           VERSION: ${{ steps.release.outputs.version }}
+          PACKAGE: igpublisher-devcontainer
         run: |
-          owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
-          if ! response=$(curl -fsSL \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://ghcr.io/v2/$owner/igpublisher-devcontainer/tags/list"); then
-            echo "needs-build=true" >> "$GITHUB_OUTPUT"
-            exit 0
+          set -euo pipefail
+
+          # 1) Zuerst in der Org-Namespace schauen
+          org_url="https://api.github.com/orgs/$OWNER/packages/container/$PACKAGE/versions?per_page=100"
+          # 2) Fallback: User-Namespace (falls das Package dem Benutzer gehört)
+          user_url="https://api.github.com/users/$OWNER/packages/container/$PACKAGE/versions?per_page=100"
+
+          fetch_versions() {
+            local url="$1"
+            curl -fsSL \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "$url" \
+            | jq -r '.[].metadata.container.tags[]?' || true
+          }
+
+          # Versuche Org zuerst
+          tags="$(fetch_versions "$org_url")" || tags=""
+          if [ -z "$tags" ]; then
+            # Fallback: User-Namespace
+            tags="$(fetch_versions "$user_url")" || tags=""
           fi
-          if echo "$response" | jq -r '.tags[]?' | grep -Fxq "sushi-$VERSION"; then
+
+          if echo "$tags" | grep -Fxq "sushi-$VERSION"; then
             echo "needs-build=false" >> "$GITHUB_OUTPUT"
+            echo "Tag sushi-$VERSION existiert bereits."
           else
             echo "needs-build=true" >> "$GITHUB_OUTPUT"
+            echo "Tag sushi-$VERSION fehlt → build nötig."
           fi
 
   build:
