@@ -47,9 +47,13 @@
     {
       "label": "Serve IG Locally",
       "type": "shell",
-      "command": "python3 -m http.server 8080 --directory ${workspaceFolder}/output",
-      "options": { "cwd": "${workspaceFolder}" },
-      "presentation": { "reveal": "always" },
+      "command": "python3 -m http.server 8080",
+      "options": {
+        "cwd": "${workspaceFolder}/output"
+      },
+      "presentation": {
+        "reveal": "always"
+      },
       "problemMatcher": []
     }
   ]
