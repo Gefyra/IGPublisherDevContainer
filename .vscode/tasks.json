@@ -45,6 +45,23 @@
       "problemMatcher": []
     },
     {
+      "label": "FHIR Package: Download and Snapshot Dependencies",
+      "type": "shell",
+      "command": "fhir-pkg-tool",
+      "args": [
+        "--sushi-deps-file",
+        "${workspaceFolder}/sushi-config.yaml"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Serve IG Locally",
       "type": "shell",
       "command": "python3 -m http.server 8080",
