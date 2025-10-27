@@ -70,6 +70,7 @@ This project includes pre-configured tasks to streamline your IG development wor
 | Task | Description |
 |------|-------------|
 | **SUSHI: Build FSH** | Compiles FSH files to FHIR resources using SUSHI |
+| **FHIR Package: Snapshot Dependencies** | Downloads and snapshots SUSHI dependencies defined in `sushi-config.yaml` |
 | **IG Publisher: Full Build** | Runs the complete IG build process (depends on SUSHI build) |
 | **Update IG Publisher** | Updates the IG Publisher to the latest version |
 | **Serve IG Locally** | Starts a local HTTP server to preview the generated IG at `http://localhost:8080` |
@@ -160,11 +161,17 @@ docker pull ghcr.io/gefyra/igpublisher-devcontainer:latest
    - Use task: **"SUSHI: Build FSH"**
    - Or run: `sushi`
 
-3. Build the complete IG:
+3. Edit dependencies in `sushi-config.yaml` as needed.
+
+4. Snapshot dependencies:
+   - Use task: **"FHIR Package: Snapshot Dependencies"**
+   - Or run: `fhir-pkg-tool --sushi-deps-file sushi-config.yaml`
+
+5. Build the complete IG:
    - Use task: **"IG Publisher: Full Build"**
    - Or run: `./_genonce.sh`
 
-4. Preview your IG:
+6. Preview your IG:
    - Use task: **"Serve IG Locally"**
    - Open `http://localhost:8080` in your browser
 
