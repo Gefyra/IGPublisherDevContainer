@@ -76,7 +76,7 @@
     {
       "label": "Git: Commit Changes",
       "type": "shell",
-      "command": "git add -A && git commit -m \"${input:commitMessage}\" && branch=$(git rev-parse --abbrev-ref HEAD) && git push -u origin \"$branch\"",
+      "command": "git add -A && git commit -m \"${input:commitMessage}\" && branch=$(git rev-parse --abbrev-ref HEAD) && git pull --no-rebase --no-edit origin \"$branch\" && git push -u origin \"$branch\"",
       "presentation": {
         "echo": true,
         "reveal": "always",
