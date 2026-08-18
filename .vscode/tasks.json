@@ -34,7 +34,7 @@
     {
       "label": "Update IG Publisher",
       "type": "shell",
-      "command": "./_updatePublisher.sh -y",
+      "command": "ig-update-publisher",
       "group": "build",
       "presentation": {
         "echo": true,
@@ -76,7 +76,7 @@
     {
       "label": "Git: Commit Changes",
       "type": "shell",
-      "command": "git add -A && git commit -m \"${input:commitMessage}\"",
+      "command": "ig-commit \"${input:commitMessage}\"",
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -88,7 +88,7 @@
     {
       "label": "Download: IG Package",
       "type": "shell",
-      "command": "if [ -f output/full-ig.zip ]; then echo '✓ full-ig.zip bereit zum Download'; echo ''; echo 'Pfad: output/full-ig.zip'; echo 'Im VS Code: Rechtsklick auf Datei → Download...'; echo ''; ls -lh output/full-ig.zip; else echo '✗ Fehler: output/full-ig.zip existiert nicht. Bitte erst einen Full Build durchführen.'; exit 1; fi",
+      "command": "ig-package",
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -100,7 +100,7 @@
     {
       "label": "Download: JSON Resources",
       "type": "shell",
-      "command": "if [ -d fsh-generated/resources ]; then if [ -n \"$(find fsh-generated/resources -name '*.json' -print -quit)\" ]; then echo 'Erstelle ZIP-Archiv...'; rm -f json-resources.zip; zip -r json-resources.zip fsh-generated/resources/*.json && echo ''; echo '✓ json-resources.zip erstellt'; echo ''; echo 'Pfad: json-resources.zip'; echo 'Im VS Code: Rechtsklick auf Datei → Download...'; echo ''; ls -lh json-resources.zip; else echo '✗ Fehler: Keine JSON-Dateien in fsh-generated/resources gefunden.'; exit 1; fi; else echo '✗ Fehler: Verzeichnis fsh-generated/resources existiert nicht. Bitte erst SUSHI Build durchführen.'; exit 1; fi",
+      "command": "ig-json-resources",
       "presentation": {
         "echo": true,
         "reveal": "always",
