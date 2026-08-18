@@ -8,6 +8,15 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {}
   },
+  "forwardPorts": [
+    8080
+  ],
+  "portsAttributes": {
+    "8080": {
+      "label": "IG Preview",
+      "onAutoForward": "notify"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -24,5 +33,6 @@
       ]
     }
   },
-  "postCreateCommand": "[ -f input-cache/publisher.jar ] || bash _updatePublisher.sh -y && echo 'Devcontainer ready.'"
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "bash .devcontainer/post-start.sh"
 }
