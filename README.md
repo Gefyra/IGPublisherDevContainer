@@ -215,13 +215,21 @@ Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nö
 ### Port 8080 ist belegt
 Dev Containers veröffentlicht Ports nicht auf Docker-Ebene, sondern leitet sie weiter. Deshalb hängt es davon ab, wo der Konflikt sitzt:
 
-- **Auf dem Host**: Hält dort schon eine andere Anwendung den Port, **meldet VS Code das nicht**. Der Browser zeigt dann unter `localhost:8080` stillschweigend die andere Anwendung statt des IG. Deshalb den IG immer über das **PORTS**-Panel öffnen (Rechtsklick → „Open in Browser"), nicht durch Eintippen von `localhost:8080` — dort steht die tatsächliche „Local Address". Wer nachsehen will, wem der Port gehört:
+- **Auf dem Host**: Der Container-Port bleibt 8080, der lokale Port kann abweichen. Ist 8080 lokal belegt, mappt VS Code laut Spec **still** auf einen freien Port — ohne Meldung, weil `requireLocalPort` standardmäßig `false` ist. Tippst du dann `localhost:8080` ein, antwortet die andere Anwendung, und der IG scheint zu fehlen.
+
+  Deshalb den IG immer über das **PORTS**-Panel öffnen (Rechtsklick → „Open in Browser"). Dort steht unter „Local Address" der tatsächlich verwendete Port. Wer wissen will, wem 8080 gehört:
 
   ```bash
   lsof -nP -iTCP:8080 -sTCP:LISTEN     # macOS/Linux
   ```
 
-  Steht dort `Code Helper`, ist es der Forward des Dev Containers und alles ist in Ordnung.
+  `Code Helper` bedeutet: das ist der Forward des Dev Containers, alles in Ordnung.
+
+  Das stille Ausweichen ist gewollt — so kollidieren mehrere gleichzeitig laufende IG-Container nicht. Wer stattdessen eine Meldung will, wenn 8080 lokal nicht verfügbar ist, ergänzt in der eigenen `devcontainer.json`:
+
+  ```json
+  "portsAttributes": { "8080": { "requireLocalPort": true } }
+  ```
 - **Im Container**: Belegt dort bereits etwas den Port, bricht der Task mit `Address already in use` ab. Dann in `.vscode/tasks.json` beim Task „Serve IG Locally" einen anderen Port setzen, z. B. `python3 -m http.server 8081`.
 
 In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den Codespaces-Proxy, nicht über lokale Ports.
