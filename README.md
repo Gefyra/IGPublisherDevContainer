@@ -225,11 +225,15 @@ Dev Containers veröffentlicht Ports nicht auf Docker-Ebene, sondern leitet sie 
 
   `Code Helper` bedeutet: das ist der Forward des Dev Containers, alles in Ordnung.
 
-  Das stille Ausweichen ist gewollt — so kollidieren mehrere gleichzeitig laufende IG-Container nicht. Wer stattdessen eine Meldung will, wenn 8080 lokal nicht verfügbar ist, ergänzt in der eigenen `devcontainer.json`:
+  Dieses Ausweichen ist das Standardverhalten der Devcontainer-Spec, nicht eine Einstellung dieses Projekts. Praktisch ist es, weil so mehrere IG-Container gleichzeitig laufen können, ohne sich um den Port zu streiten.
+
+  Wer die stille Umleitung nicht mag, kann sie sichtbar machen — in der `devcontainer.json` des Projekts:
 
   ```json
   "portsAttributes": { "8080": { "requireLocalPort": true } }
   ```
+
+  Dann meldet VS Code, wenn 8080 lokal nicht verwendet werden kann. Den Port frei machen kann die Option nicht; sie sorgt nur dafür, dass du davon erfährst.
 - **Im Container**: Belegt dort bereits etwas den Port, bricht der Task mit `Address already in use` ab. Dann in `.vscode/tasks.json` beim Task „Serve IG Locally" einen anderen Port setzen, z. B. `python3 -m http.server 8081`.
 
 In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den Codespaces-Proxy, nicht über lokale Ports.
