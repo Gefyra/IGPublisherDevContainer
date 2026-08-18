@@ -12,9 +12,11 @@ on:
 permissions:
   contents: write
 
-# Shared with ig-publisher.yml, which pushes to the same branch.
+# Keeps two cleanups off each other. ig-publisher.yml deliberately stays out of
+# this group so that IG builds still run in parallel; the script retries when a
+# publish updates gh-pages underneath it.
 concurrency:
-  group: gh-pages-publish
+  group: gh-pages-cleanup
   cancel-in-progress: false
 
 jobs:
