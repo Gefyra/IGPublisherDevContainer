@@ -15,6 +15,12 @@ permissions:
   issues: write
   pull-requests: write
 
+# Shared with pages-cleanup.yml: both push to gh-pages, and a non-fast-forward
+# would fail the run. Serializes builds across branches as a side effect.
+concurrency:
+  group: gh-pages-publish
+  cancel-in-progress: false
+
 jobs:
 
   build:

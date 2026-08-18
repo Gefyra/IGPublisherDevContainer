@@ -195,7 +195,7 @@ Ein paar Details, die erfahrungsgemäß Fragen aufwerfen:
 
 - Veröffentlicht wird nur bei **Push**, nicht für Pull Requests aus Forks.
 - Der Branch-Name wird unverändert als Verzeichnis verwendet.
-- Alte Branch-Verzeichnisse bleiben nach dem Löschen des Branches auf `gh-pages` liegen und müssen bei Bedarf von Hand entfernt werden.
+- Wird ein Branch gelöscht, räumt der Workflow „Clean up branch previews" sein Verzeichnis weg — sofort beim Löschen, plus wöchentlich als Nachlese für Branches, die dabei durchgerutscht sind. Manuell anstoßen lässt er sich über „Run workflow".
 - Bis eine Änderung sichtbar ist, vergehen nach dem Build noch ein paar Minuten, bis GitHub Pages ausliefert.
 
 ## 📖 Writing Your First IG
