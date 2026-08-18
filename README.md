@@ -212,8 +212,13 @@ Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nö
 - Check `input/ignoreWarnings.txt` for known issues
 - Review `output/qa.html` for validation issues
 
-### Port conflicts
-- If port 8080 is in use, modify the port in `.vscode/tasks.json`
+### Port 8080 ist belegt
+Dev Containers veröffentlicht Ports nicht auf Docker-Ebene, sondern leitet sie weiter. Deshalb hängt es davon ab, wo der Konflikt sitzt:
+
+- **Auf dem Host**: VS Code weicht auf einen freien lokalen Port aus. Der Container-Port bleibt 8080. Die tatsächliche Adresse steht im **PORTS**-Panel unter „Local Address" — von dort öffnen, statt `localhost:8080` einzutippen.
+- **Im Container**: Belegt dort bereits etwas den Port, bricht der Task mit `Address already in use` ab. Dann in `.vscode/tasks.json` beim Task „Serve IG Locally" einen anderen Port setzen, z. B. `python3 -m http.server 8081`.
+
+In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den Codespaces-Proxy, nicht über lokale Ports.
 
 ### „Update IG Publisher" schlägt mit `curl: (23)` fehl
 Das Projekt ruft `_updatePublisher.sh` noch direkt auf, statt den Task auf `ig-update-publisher` zeigen zu lassen. `curl` schreibt dann durch den Symlink in das schreibgeschützte Image. Es geht nichts verloren; in `.vscode/tasks.json` beim Task „Update IG Publisher" setzen:
