@@ -113,7 +113,7 @@ Worth knowing:
 On every start the container reports what you are building with:
 
 ```
-IG Publisher 2.3.2 (aus dem Image, 14.08.2026)
+IG Publisher 2.3.2 (from the image, 2026-08-14)
 ```
 
 Once the jar is older than 14 days it adds a hint. There are two ways to update, and which one is right depends on what you need.
