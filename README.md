@@ -1,5 +1,6 @@
 # FHIR IG Publisher Dev Container
 
+[![Published IG](https://img.shields.io/badge/IG-published-blue)](https://gefyra.github.io/IGPublisherDevContainer/main/)
 [![License](https://img.shields.io/github/license/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/blob/main/LICENSE)
 [![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/Gefyra/igpublisher-devcontainer-image/pkgs/container/igpublisher-devcontainer-image)
 [![GitHub issues](https://img.shields.io/github/issues/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/issues)
@@ -172,6 +173,30 @@ Bringt neben dem Publisher auch SUSHI, `fhir-pkg-tool`, Extensions und die Conta
 `input-cache/publisher.jar` ist normalerweise ein **Symlink** auf das Jar im Image (`/opt/ig/publisher.jar`). Dadurch existiert es einmal statt zweimal, und ein Rebuild bringt dich automatisch auf die Version des neuen Images.
 
 Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nötig, weil in das Image hinein nicht geschrieben werden kann. Danach belegst du vorübergehend ~440 MB statt ~220 MB. Sobald das Image aufgeholt hat, tauscht der nächste Rebuild die Kopie automatisch gegen den Link zurück und gibt den Platz wieder frei.
+
+## 🌐 Veröffentlichter IG (GitHub Pages)
+
+Neben der lokalen Vorschau baut GitHub Actions den IG bei **jedem Push auf einen Branch** und veröffentlicht ihn auf GitHub Pages — **pro Branch in einem eigenen Verzeichnis**:
+
+```
+https://<owner>.github.io/<repo>/<branch>/
+```
+
+Für dieses Repository also:
+
+| Branch | URL |
+|---|---|
+| `main` | https://gefyra.github.io/IGPublisherDevContainer/main/ |
+| Feature-Branch | `https://gefyra.github.io/IGPublisherDevContainer/<branch>/` |
+
+Dadurch lässt sich ein Stand aus einem Branch teilen oder mit `main` vergleichen, ohne dass jemand den IG selbst bauen muss. Die Pipeline schreibt die URL zusätzlich in die Zusammenfassung des Workflow-Laufs und kommentiert sie an den zugehörigen Pull Request.
+
+Ein paar Details, die erfahrungsgemäß Fragen aufwerfen:
+
+- Veröffentlicht wird nur bei **Push**, nicht für Pull Requests aus Forks.
+- Der Branch-Name wird unverändert als Verzeichnis verwendet.
+- Wird ein Branch gelöscht, räumt der Workflow „Clean up branch previews" sein Verzeichnis weg — sofort beim Löschen, plus wöchentlich als Nachlese für Branches, die dabei durchgerutscht sind. Manuell anstoßen lässt er sich über „Run workflow".
+- Bis eine Änderung sichtbar ist, vergehen nach dem Build noch ein paar Minuten, bis GitHub Pages ausliefert.
 
 ## 📖 Writing Your First IG
 
