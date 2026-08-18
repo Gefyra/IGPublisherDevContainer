@@ -1,6 +1,6 @@
 # FHIR IG Publisher Dev Container
 
-[![Published IG](https://img.shields.io/badge/IG-published-blue)](https://gefyra.github.io/IGPublisherDevContainer/main/)
+[![Published IG](https://img.shields.io/badge/IG-published-blue)](https://gefyra.github.io/IGPublisherDevContainer/branches/main/)
 [![License](https://img.shields.io/github/license/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/blob/main/LICENSE)
 [![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/Gefyra/igpublisher-devcontainer-image/pkgs/container/igpublisher-devcontainer-image)
 [![GitHub issues](https://img.shields.io/github/issues/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/issues)
@@ -31,33 +31,41 @@ Choose one of the following options:
 
 ## 🏃 Getting Started
 
-### Using Dev Containers (Local)
+### Ein eigenes IG anlegen
 
-1. Clone this repository:
+Dieses Repository ist eine **GitHub-Template-Vorlage**. Für ein neues IG also nicht forken, sondern:
+
+1. Oben auf **„Use this template" → „Create a new repository"** klicken ([direkter Link](https://github.com/Gefyra/IGPublisherDevContainer/generate))
+2. Namen und Sichtbarkeit wählen, Repository erstellen
+3. Im neuen Repository unter **Settings → Pages** als Quelle den Branch `gh-pages` einstellen, damit der gebaute IG veröffentlicht wird
+
+> [!TIP]
+> **Forken ist hier der falsche Weg.** Ein Fork bringt nur dann etwas, wenn du Änderungen vom Original übernehmen willst — bei einem IG ist das aber gerade nicht der Fall: dein Repository enthält deine Profile und deine `sushi-config.yaml`, das Original eine Beispiel-IG. Ein Merge zöge dessen Beispielinhalte in dein Projekt. Dazu zielen Pull Requests in einem Fork standardmäßig auf das Original, und öffentliche Forks lassen sich nicht nachträglich privat schalten.
+>
+> Aktualisierungen der Entwicklungsumgebung kommen ohnehin nicht über das Repository, sondern über das Container-Image — siehe [Container und Publisher aktualisieren](#-container-und-publisher-aktualisieren).
+
+### Lokal mit Dev Containers
+
+1. Dein Repository klonen:
    ```bash
-   git clone https://github.com/Gefyra/IGPublisherDevContainer.git
-   cd IGPublisherDevContainer
+   git clone https://github.com/<owner>/<dein-ig>.git
+   cd <dein-ig>
    ```
 
-2. Open the project in VS Code:
+2. In VS Code öffnen:
    ```bash
    code .
    ```
 
-3. When prompted, click **"Reopen in Container"** or run the command:
-   - Press `F1` or `Cmd+Shift+P` (Mac) / `Ctrl+Shift+P` (Windows/Linux)
-   - Type: `Dev Containers: Reopen in Container`
+3. Auf **„Reopen in Container"** klicken — oder `F1` → `Dev Containers: Reopen in Container`
 
-4. Wait for the container to build and start (first time may take a few minutes)
+4. Den ersten Start abwarten; das Image wird dabei einmalig geladen
 
-### Using GitHub Codespaces
+### In GitHub Codespaces
 
-1. **Fork this repository** to your GitHub account (click the "Fork" button at the top right)
-2. Navigate to your forked repository on GitHub
-3. Click the green **"Code"** button
-4. Select the **"Codespaces"** tab
-5. Click **"Create codespace on main"**
-6. Wait for your Codespace to start (automatic setup)
+1. Im Repository auf den grünen **„Code"**-Button klicken
+2. Reiter **„Codespaces"** → **„Create codespace on main"**
+3. Den automatischen Setup abwarten
 
 ## 🛠️ Available VS Code Tasks
 
@@ -176,27 +184,34 @@ Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nö
 
 ## 🌐 Veröffentlichter IG (GitHub Pages)
 
-Neben der lokalen Vorschau baut GitHub Actions den IG bei **jedem Push auf einen Branch** und veröffentlicht ihn auf GitHub Pages — **pro Branch in einem eigenen Verzeichnis**:
+GitHub Actions baut den IG und veröffentlicht ihn auf GitHub Pages. Die Seite hat drei Ebenen:
 
 ```
-https://<owner>.github.io/<repo>/<branch>/
+https://<owner>.github.io/<repo>/                    neuestes Release
+https://<owner>.github.io/<repo>/<version>/          archivierte Releases
+https://<owner>.github.io/<repo>/branches/<name>/    Vorschau je Branch
 ```
 
-Für dieses Repository also:
+Für dieses Repository:
 
-| Branch | URL |
+| Was | URL |
 |---|---|
-| `main` | https://gefyra.github.io/IGPublisherDevContainer/main/ |
-| Feature-Branch | `https://gefyra.github.io/IGPublisherDevContainer/<branch>/` |
+| Neuestes Release | https://gefyra.github.io/IGPublisherDevContainer/ |
+| Vorschau `main` | https://gefyra.github.io/IGPublisherDevContainer/branches/main/ |
+| Vorschau Feature-Branch | `…/branches/<branch>/` |
 
-Dadurch lässt sich ein Stand aus einem Branch teilen oder mit `main` vergleichen, ohne dass jemand den IG selbst bauen muss. Die Pipeline schreibt die URL zusätzlich in die Zusammenfassung des Workflow-Laufs und kommentiert sie an den zugehörigen Pull Request.
+**Branch-Vorschauen** entstehen bei jedem Push auf einen Branch. Damit lässt sich ein Zwischenstand teilen oder gegen `main` vergleichen, ohne dass jemand selbst baut. Die Pipeline schreibt die URL in die Zusammenfassung des Laufs und kommentiert sie an den zugehörigen Pull Request.
+
+**Releases** entstehen, wenn du auf GitHub ein Release veröffentlichst. Der Build landet dann zugleich im Wurzelverzeichnis (als jeweils neuester Stand) und unter seiner Versionsnummer im Archiv. Der Tag muss zur `version` in `sushi-config.yaml` passen — sonst bricht der Lauf ab, statt einen Build unter einer falschen Nummer zu veröffentlichen.
 
 Ein paar Details, die erfahrungsgemäß Fragen aufwerfen:
 
-- Veröffentlicht wird nur bei **Push**, nicht für Pull Requests aus Forks.
-- Der Branch-Name wird unverändert als Verzeichnis verwendet.
-- Wird ein Branch gelöscht, räumt der Workflow „Clean up branch previews" sein Verzeichnis weg — sofort beim Löschen, plus wöchentlich als Nachlese für Branches, die dabei durchgerutscht sind. Manuell anstoßen lässt er sich über „Run workflow".
-- Bis eine Änderung sichtbar ist, vergehen nach dem Build noch ein paar Minuten, bis GitHub Pages ausliefert.
+- Veröffentlicht wird nur bei **Push** und **Release**, nicht für Pull Requests aus Forks.
+- Der Branch-Name wird unverändert als Pfad verwendet: `feature/x` landet unter `branches/feature/x/`.
+- Wird ein Branch gelöscht, räumt der Workflow „Clean up branch previews" seine Vorschau weg — sofort beim Löschen, plus wöchentlich als Nachlese. Manuell anstoßen lässt er sich über „Run workflow".
+- **`full-ig.zip` wird nicht veröffentlicht.** Das Bündel ändert sich bei jedem Build vollständig, wird von der Seite nirgends verlinkt und würde die Historie unnötig aufblähen. Die Package-Tarballs (`package*.tgz`) bleiben dagegen erhalten, damit ein konsumierender IG auf einen Branch- oder Release-Stand zeigen kann.
+- `gh-pages` wird bei jeder Veröffentlichung als einzelner Root-Commit neu geschrieben. Pages liefert ohnehin nur den aktuellen Stand aus; mit Historie lägen dort sonst die Binärdateien jedes je gebauten Stands für immer.
+- Bis eine Änderung sichtbar ist, vergehen nach dem Build noch ein paar Minuten, bis Pages ausliefert.
 
 ## 📖 Writing Your First IG
 

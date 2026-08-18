@@ -1,7 +1,7 @@
 name: Clean up branch previews
 
-# Preview directories on gh-pages outlive the branch they were built from, so
-# they are reaped when a branch goes away -- plus a weekly sweep to catch
+# Preview directories under branches/ outlive the branch they were built from,
+# so they are reaped when a branch goes away -- plus a weekly sweep to catch
 # branches deleted while this workflow was not running (or before it existed).
 on:
   delete:
@@ -35,4 +35,4 @@ jobs:
         env:
           REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: scripts/gh-pages-cleanup.sh
+        run: scripts/gh-pages.sh cleanup
