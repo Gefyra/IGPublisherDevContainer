@@ -20,12 +20,7 @@ A starting point for FHIR Implementation Guides. Create a repository from this t
 
 ### 1. Create your repository
 
-This repository is a **GitHub template**. Do not fork it — click **"Use this template" → "Create a new repository"** ([direct link](https://github.com/Gefyra/IGPublisherDevContainer/generate)), pick a name, and you are done.
-
-> [!TIP]
-> **Why not fork?** A fork is worth having when you want to pull changes from the original — which is exactly what you do not want here. Your repository holds your profiles and your `sushi-config.yaml`; the original holds a sample IG, and merging would drag its sample content into your project. On top of that, pull requests in a fork target the original by default, and a public fork cannot be made private later.
->
-> Updates to the development environment do not travel through the repository anyway. They come with the container image — see [Staying up to date](#staying-up-to-date).
+This repository is a **GitHub template**. Click **"Use this template" → "Create a new repository"** ([direct link](https://github.com/Gefyra/IGPublisherDevContainer/generate)), pick a name, and you are done. Use the template rather than a fork.
 
 ### 2. Open it
 
@@ -43,7 +38,7 @@ Then click **"Reopen in Container"**, or press `F1` and run `Dev Containers: Reo
 
 ### 3. Build and look at it
 
-Press `F1` → `Tasks: Run Task` → **"IG Publisher: Full Build"** (or just `Cmd/Ctrl+Shift+B`). When it finishes, run the **"Serve IG Locally"** task and open the URL from the **PORTS** panel.
+Press `F1` → `Tasks: Run Task` → **"IG Publisher: Full Build"** (or just `Cmd/Ctrl+Shift+B`). When it finishes, run the **"Serve IG Locally"** task; VS Code offers **"Open in Browser"** for the forwarded port.
 
 ### 4. Turn on publishing
 
@@ -104,7 +99,7 @@ https://<owner>.github.io/<repo>/branches/<name>/    one preview per branch
 
 **Releases** happen when you publish a GitHub release. The build then lands both at the site root, as the current version, and in the archive under its version number. The tag has to match the `version` in `sushi-config.yaml` — otherwise the run fails rather than publishing a build under a number it does not carry.
 
-Details that tend to come up:
+Worth knowing:
 
 - Publishing happens on **push** and **release** only, not for pull requests from forks.
 - The branch name is used verbatim as a path: `feature/x` becomes `branches/feature/x/`.
@@ -202,9 +197,9 @@ Make sure Docker is running, then try `Dev Containers: Rebuild Container`. The D
 
 Dev Containers forwards ports rather than publishing them to Docker, so it depends on where the conflict is.
 
-**On the host:** the container port stays 8080 while the local port may differ. If 8080 is taken locally, VS Code **silently** maps to a free port — without a message, because `requireLocalPort` defaults to `false`. Type `localhost:8080` and the other application answers, making the IG look like it is missing.
+**On the host:** the container port stays 8080 while the local port may differ. If 8080 is taken locally, VS Code **silently** maps to a free port, because `requireLocalPort` defaults to `false`. Typing `localhost:8080` then reaches whatever else owns that port, making the IG look like it is missing.
 
-So open the IG from the **PORTS** panel (right click → "Open in Browser"), where "Local Address" shows the port actually in use. To find out who owns 8080:
+When the server starts, VS Code shows a notification with the forwarded address and an **"Open in Browser"** button — the image asks for it by setting `onAutoForward: notify`. Use that button rather than typing the URL. Afterwards the address stays available in the **PORTS** panel under "Local Address". To find out who owns 8080:
 
 ```bash
 lsof -nP -iTCP:8080 -sTCP:LISTEN     # macOS/Linux
