@@ -215,7 +215,13 @@ Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nö
 ### Port 8080 ist belegt
 Dev Containers veröffentlicht Ports nicht auf Docker-Ebene, sondern leitet sie weiter. Deshalb hängt es davon ab, wo der Konflikt sitzt:
 
-- **Auf dem Host**: VS Code weicht auf einen freien lokalen Port aus. Der Container-Port bleibt 8080. Die tatsächliche Adresse steht im **PORTS**-Panel unter „Local Address" — von dort öffnen, statt `localhost:8080` einzutippen.
+- **Auf dem Host**: Hält dort schon eine andere Anwendung den Port, **meldet VS Code das nicht**. Der Browser zeigt dann unter `localhost:8080` stillschweigend die andere Anwendung statt des IG. Deshalb den IG immer über das **PORTS**-Panel öffnen (Rechtsklick → „Open in Browser"), nicht durch Eintippen von `localhost:8080` — dort steht die tatsächliche „Local Address". Wer nachsehen will, wem der Port gehört:
+
+  ```bash
+  lsof -nP -iTCP:8080 -sTCP:LISTEN     # macOS/Linux
+  ```
+
+  Steht dort `Code Helper`, ist es der Forward des Dev Containers und alles ist in Ordnung.
 - **Im Container**: Belegt dort bereits etwas den Port, bricht der Task mit `Address already in use` ab. Dann in `.vscode/tasks.json` beim Task „Serve IG Locally" einen anderen Port setzen, z. B. `python3 -m http.server 8081`.
 
 In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den Codespaces-Proxy, nicht über lokale Ports.
