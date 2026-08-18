@@ -1,7 +1,7 @@
 # FHIR IG Publisher Dev Container
 
 [![License](https://img.shields.io/github/license/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/blob/main/LICENSE)
-[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/Gefyra/IGPublisherDevContainer/pkgs/container/igpublisher-devcontainer)
+[![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/Gefyra/igpublisher-devcontainer-image/pkgs/container/igpublisher-devcontainer-image)
 [![GitHub issues](https://img.shields.io/github/issues/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/issues)
 [![GitHub stars](https://img.shields.io/github/stars/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/stargazers)
 [![Dev Container](https://img.shields.io/badge/Dev%20Container-Ready-green)](https://code.visualstudio.com/docs/devcontainers/containers)
@@ -72,8 +72,13 @@ This project includes pre-configured tasks to streamline your IG development wor
 | **SUSHI: Build FSH** | Compiles FSH files to FHIR resources using SUSHI |
 | **FHIR Package: Snapshot Dependencies** | Downloads and snapshots SUSHI dependencies defined in `sushi-config.yaml` |
 | **IG Publisher: Full Build** | Runs the complete IG build process (depends on SUSHI build) |
-| **Update IG Publisher** | Updates the IG Publisher to the latest version |
+| **Update IG Publisher** | Fetches the current IG Publisher release into `input-cache/` |
 | **Serve IG Locally** | Starts a local HTTP server to preview the generated IG at `http://localhost:8080` |
+| **Git: Commit Changes** | Stages everything and commits with a message you are prompted for |
+| **Download: IG Package** | Points at `output/full-ig.zip` for download |
+| **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP for download |
+
+Die Tasks rufen Kommandos auf, die das Container-Image mitbringt (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). Dadurch bleibt `tasks.json` stabil: ändert sich die Logik dahinter, kommt das mit dem nächsten Image, ohne dass diese Datei angefasst werden muss.
 
 ### Quick Build
 
@@ -85,8 +90,7 @@ The default build task is **"IG Publisher: Full Build"**. You can run it with:
 ```
 .
 ├── .devcontainer/          # Dev container configuration
-│   ├── devcontainer.json   # Container settings and VS Code customizations
-│   └── Dockerfile          # Container image definition
+│   └── devcontainer.json   # Points at the prebuilt image; settings come from it
 ├── input/                  # IG input files
 │   ├── fsh/               # FSH (FHIR Shorthand) source files
 │   └── pagecontent/       # Markdown content for IG pages
@@ -135,18 +139,40 @@ The following extensions are automatically installed in the container:
   - `mhutchie.git-graph` - Git visualization
   - `peakchen90.open-html-in-browser` - HTML preview
 
-## 🔄 Updating the Container Image
+## 🔄 Container und Publisher aktualisieren
 
-The container image is automatically built and published to GitHub Container Registry when changes are pushed to the `.devcontainer/` directory.
+Beim Start meldet der Container, womit du baust:
 
-**Image Tags:**
-- `latest` - Latest version
-- `sushi-X.Y.Z` - Tagged with specific SUSHI version
-
-**Pull the latest image:**
-```bash
-docker pull ghcr.io/gefyra/igpublisher-devcontainer:latest
 ```
+IG Publisher 2.3.2 (aus dem Image, 14.08.2026)
+```
+
+Ist das Jar älter als 14 Tage, kommt ein Hinweis dazu. Zum Aktualisieren gibt es zwei Wege — welcher der richtige ist, hängt davon ab, was du brauchst.
+
+### Nur den IG Publisher
+
+Task **„Update IG Publisher"** ausführen. Holt sofort das aktuelle HL7-Release, unabhängig vom Alter des Images, ohne Rebuild. Der richtige Weg, wenn du auf einen frischen Publisher-Fix wartest.
+
+### Das ganze Image
+
+Bringt neben dem Publisher auch SUSHI, `fhir-pkg-tool`, Extensions und die Container-Logik auf Stand. Das Image wird automatisch neu gebaut, sobald HL7 ein neues Publisher-Release veröffentlicht (in der Regel innerhalb von 24 Stunden).
+
+**Dein Container holt das nicht von allein.** `latest` ist ein bewegliches Tag: Docker verwendet weiter das lokal zwischengespeicherte Image, bis du es explizit neu ziehst.
+
+| Umgebung | Vorgehen |
+|---|---|
+| VS Code lokal | `Dev Containers: Rebuild Container`; wenn sich nichts tut, **Rebuild Without Cache** |
+| GitHub Codespaces | `Codespaces: Full Rebuild Container` |
+| Kommandozeile | `docker pull ghcr.io/gefyra/igpublisher-devcontainer-image:latest`, danach neu bauen |
+
+> [!IMPORTANT]
+> **Stoppen und Starten reicht nicht.** Ein angehaltener und wieder gestarteter Container — oder Codespace — ist derselbe Container: `postCreateCommand` läuft dabei nicht, das Image wird nicht neu gezogen. Wer seinen Codespace monatelang nur stoppt und startet, arbeitet monatelang mit demselben Publisher. Nach einem Rebuild bist du automatisch wieder aktuell.
+
+### Wo das Publisher-Jar liegt
+
+`input-cache/publisher.jar` ist normalerweise ein **Symlink** auf das Jar im Image (`/opt/ig/publisher.jar`). Dadurch existiert es einmal statt zweimal, und ein Rebuild bringt dich automatisch auf die Version des neuen Images.
+
+Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nötig, weil in das Image hinein nicht geschrieben werden kann. Danach belegst du vorübergehend ~440 MB statt ~220 MB. Sobald das Image aufgeholt hat, tauscht der nächste Rebuild die Kopie automatisch gegen den Link zurück und gibt den Platz wieder frei.
 
 ## 📖 Writing Your First IG
 
@@ -189,6 +215,19 @@ docker pull ghcr.io/gefyra/igpublisher-devcontainer:latest
 
 ### Port conflicts
 - If port 8080 is in use, modify the port in `.vscode/tasks.json`
+
+### „Update IG Publisher" schlägt mit `curl: (23)` fehl
+Das Projekt ruft `_updatePublisher.sh` noch direkt auf, statt den Task auf `ig-update-publisher` zeigen zu lassen. `curl` schreibt dann durch den Symlink in das schreibgeschützte Image. Es geht nichts verloren; in `.vscode/tasks.json` beim Task „Update IG Publisher" setzen:
+
+```json
+"command": "ig-update-publisher"
+```
+
+### Der Publisher ist trotz Rebuild alt
+Ein einfacher Rebuild kann das zwischengespeicherte Image weiterverwenden. **Rebuild Without Cache** bzw. in Codespaces **Full Rebuild Container** verwenden — oder für einen sofort aktuellen Publisher den Task „Update IG Publisher".
+
+### `input-cache/publisher.jar` ist auf dem Host ein toter Link
+Erwartet: der Link zeigt auf einen Pfad im Container. Innerhalb des Dev Containers ist er gültig, und `input-cache/` ist ohnehin in `.gitignore`.
 
 ## 🤝 Contributing
 
