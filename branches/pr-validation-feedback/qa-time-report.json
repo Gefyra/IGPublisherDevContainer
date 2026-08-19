@@ -1,0 +1,189 @@
+{
+  "date" : "Wed, 19 Aug, 2026 09:00:58 +0000",
+  "doco" : "For each file: start is seconds after start activity occurred. Length = milliseconds activity took",
+  "files" : [{
+    "name" : "/fsh-generated/resources/ImplementationGuide-info.gefyra.training.json",
+    "size" : 1645,
+    "processes" : [{
+      "activity" : "load",
+      "start" : 38,
+      "length" : 13
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 40,
+      "length" : 9
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 37
+    },
+    {
+      "activity" : "validate",
+      "start" : 41,
+      "length" : 2308
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 43,
+      "length" : 1
+    },
+    {
+      "activity" : "generate1",
+      "start" : 43,
+      "length" : 74
+    },
+    {
+      "activity" : "generate2",
+      "start" : 45,
+      "length" : 46
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 49,
+      "length" : 2
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/Patient-PatientExample.json",
+    "size" : 258,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 3
+    },
+    {
+      "activity" : "load-configure",
+      "start" : 40,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 2
+    },
+    {
+      "activity" : "validate",
+      "start" : 43,
+      "length" : 3
+    },
+    {
+      "activity" : "generate1",
+      "start" : 43,
+      "length" : 5
+    },
+    {
+      "activity" : "generate2",
+      "start" : 45,
+      "length" : 8
+    }]
+  },
+  {
+    "name" : "fsh-generated/resources/StructureDefinition-MyPatient.json",
+    "size" : 606,
+    "processes" : [{
+      "activity" : "loadResources",
+      "start" : 38,
+      "length" : 1
+    },
+    {
+      "activity" : "load",
+      "start" : 38,
+      "length" : 7
+    },
+    {
+      "activity" : "generateSnapshots",
+      "start" : 38,
+      "length" : 41
+    },
+    {
+      "activity" : "loadDepInfo",
+      "start" : 40,
+      "length" : 1
+    },
+    {
+      "activity" : "checkR4R4B",
+      "start" : 40,
+      "length" : 1
+    },
+    {
+      "activity" : "generateNarratives",
+      "start" : 40,
+      "length" : 79
+    },
+    {
+      "activity" : "validate",
+      "start" : 40,
+      "length" : 727
+    },
+    {
+      "activity" : "checkConformanceResources",
+      "start" : 43,
+      "length" : 1
+    },
+    {
+      "activity" : "scanForUsageStats",
+      "start" : 43,
+      "length" : 1
+    },
+    {
+      "activity" : "generate1",
+      "start" : 43,
+      "length" : 99
+    },
+    {
+      "activity" : "generate2",
+      "start" : 45,
+      "length" : 547
+    },
+    {
+      "activity" : "generate2",
+      "start" : 46,
+      "length" : 576
+    },
+    {
+      "activity" : "generateValidationPack",
+      "start" : 49,
+      "length" : 7
+    },
+    {
+      "activity" : "scanProfilesForR5",
+      "start" : 61,
+      "length" : 1
+    },
+    {
+      "activity" : "scanExamplesForR5",
+      "start" : 61,
+      "length" : 1
+    }]
+  },
+  {
+    "name" : "/fsh-generated/includes/menu.xml",
+    "size" : 1043
+  },
+  {
+    "name" : "/fsh-generated/includes/fsh-link-references.md",
+    "size" : 93
+  },
+  {
+    "name" : "/input/pagecontent/index.md",
+    "size" : 82
+  },
+  {
+    "name" : "/input/pagecontent/changelog.md",
+    "size" : 24
+  },
+  {
+    "name" : "/template/config",
+    "size" : 0
+  },
+  {
+    "name" : "/template/config/_config.yml",
+    "size" : 140
+  },
+  {
+    "name" : "/temp/pages/_includes/artifacts.xml",
+    "size" : 2128
+  }]
+}

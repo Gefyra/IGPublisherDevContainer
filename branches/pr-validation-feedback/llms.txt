@@ -1,0 +1,21 @@
+# info.gefyra.training#0.1.0: null
+
+## Pages
+
+* [Home](index.md)
+* [Changelog](changelog.md)
+* [Artifacts Summary](artifacts.md)
+
+## Resources
+
+### Resource Profiles
+
+* [MyPatient](StructureDefinition-MyPatient.md)
+
+### ImplementationGuides
+
+* [SchulungsIG](index.md)
+
+### Examples
+
+* [PatientExample (Patient)](Patient-PatientExample.md)

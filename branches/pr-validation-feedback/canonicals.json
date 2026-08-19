@@ -1,0 +1,14 @@
+[{
+  "id" : "info.gefyra.training",
+  "type" : "ImplementationGuide",
+  "url" : "http://gefyra.info/training/ImplementationGuide/info.gefyra.training",
+  "version" : "0.1.0",
+  "name" : "SchulungsIG"
+},
+{
+  "id" : "MyPatient",
+  "type" : "StructureDefinition",
+  "url" : "http://gefyra.info/training/StructureDefinition/MyPatient",
+  "version" : "0.1.0",
+  "name" : "MyPatient"
+}]
