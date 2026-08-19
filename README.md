@@ -1,5 +1,7 @@
 # FHIR IG Publisher Dev Container
 
+**English** · [Deutsch](README.de.md)
+
 [![Published IG](https://img.shields.io/badge/IG-published-blue)](https://gefyra.github.io/IGPublisherDevContainer/branches/main/)
 [![License](https://img.shields.io/github/license/Gefyra/IGPublisherDevContainer)](https://github.com/Gefyra/IGPublisherDevContainer/blob/main/LICENSE)
 [![Docker Image](https://img.shields.io/badge/docker-ghcr.io-blue)](https://github.com/Gefyra/igpublisher-devcontainer-image/pkgs/container/igpublisher-devcontainer-image)
@@ -7,309 +9,245 @@
 [![Dev Container](https://img.shields.io/badge/Dev%20Container-Ready-green)](https://code.visualstudio.com/docs/devcontainers/containers)
 [![Codespaces](https://img.shields.io/badge/Codespaces-Ready-brightgreen)](https://github.com/features/codespaces)
 
-A ready-to-use development container for building FHIR Implementation Guides (IGs) with SUSHI and the IG Publisher.
+A starting point for FHIR Implementation Guides. Create a repository from this template and you get an IG that builds, previews and publishes itself — with no Java, Ruby, Node or IG Publisher on your machine. SUSHI, the IG Publisher, Jekyll and `fhir-pkg-tool` live in a container that runs on Intel and Apple Silicon, in VS Code or entirely in the browser via Codespaces.
 
-## 🚀 Features
+**New here?** [Quick start](#quick-start), then [Your first profile](#your-first-profile).
+**Know your way around?** [Everyday workflow](#everyday-workflow) · [Publishing](#publishing) · [Reference](#reference)
 
-- **Pre-configured Environment**: Comes with SUSHI (FSH compiler) and IG Publisher pre-installed
-- **Multi-Platform Support**: Works on both AMD64 and ARM64 architectures (including Apple Silicon)
-- **VS Code Integration**: Optimized for Visual Studio Code with Dev Containers
-- **GitHub Codespaces Ready**: Start developing in seconds directly in your browser
-- **Automated Tasks**: Pre-configured VS Code tasks for common IG development workflows
+---
 
-## 📋 Prerequisites
+## Quick start
 
-Choose one of the following options:
+### 1. Create your repository
 
-### Option 1: Local Development
-- [Docker](https://www.docker.com/get-started) installed on your machine
-- [Visual Studio Code](https://code.visualstudio.com/)
-- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+This repository is a **GitHub template**. Click **"Use this template" → "Create a new repository"** ([direct link](https://github.com/Gefyra/IGPublisherDevContainer/generate)), pick a name, and you are done. Use the template rather than a fork.
 
-### Option 2: GitHub Codespaces
-- A GitHub account (no local installation required!)
+### 2. Open it
 
-## 🏃 Getting Started
+**In the browser (nothing to install):** press the green **"Code"** button → **Codespaces** tab → **"Create codespace on main"**.
 
-### Ein eigenes IG anlegen
+**Locally:** you need [Docker](https://www.docker.com/get-started), [VS Code](https://code.visualstudio.com/) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 
-Dieses Repository ist eine **GitHub-Template-Vorlage**. Für ein neues IG also nicht forken, sondern:
-
-1. Oben auf **„Use this template" → „Create a new repository"** klicken ([direkter Link](https://github.com/Gefyra/IGPublisherDevContainer/generate))
-2. Namen und Sichtbarkeit wählen, Repository erstellen
-3. Im neuen Repository unter **Settings → Pages** als Quelle den Branch `gh-pages` einstellen, damit der gebaute IG veröffentlicht wird
-
-> [!TIP]
-> **Forken ist hier der falsche Weg.** Ein Fork bringt nur dann etwas, wenn du Änderungen vom Original übernehmen willst — bei einem IG ist das aber gerade nicht der Fall: dein Repository enthält deine Profile und deine `sushi-config.yaml`, das Original eine Beispiel-IG. Ein Merge zöge dessen Beispielinhalte in dein Projekt. Dazu zielen Pull Requests in einem Fork standardmäßig auf das Original, und öffentliche Forks lassen sich nicht nachträglich privat schalten.
->
-> Aktualisierungen der Entwicklungsumgebung kommen ohnehin nicht über das Repository, sondern über das Container-Image — siehe [Container und Publisher aktualisieren](#-container-und-publisher-aktualisieren).
-
-### Lokal mit Dev Containers
-
-1. Dein Repository klonen:
-   ```bash
-   git clone https://github.com/<owner>/<dein-ig>.git
-   cd <dein-ig>
-   ```
-
-2. In VS Code öffnen:
-   ```bash
-   code .
-   ```
-
-3. Auf **„Reopen in Container"** klicken — oder `F1` → `Dev Containers: Reopen in Container`
-
-4. Den ersten Start abwarten; das Image wird dabei einmalig geladen
-
-### In GitHub Codespaces
-
-1. Im Repository auf den grünen **„Code"**-Button klicken
-2. Reiter **„Codespaces"** → **„Create codespace on main"**
-3. Den automatischen Setup abwarten
-
-## 🛠️ Available VS Code Tasks
-
-This project includes pre-configured tasks to streamline your IG development workflow. Access them via:
-- Press `F1` or `Cmd+Shift+P` (Mac) / `Ctrl+Shift+P` (Windows/Linux)
-- Type: `Tasks: Run Task`
-
-### Available Tasks:
-
-| Task | Description |
-|------|-------------|
-| **SUSHI: Build FSH** | Compiles FSH files to FHIR resources using SUSHI |
-| **FHIR Package: Snapshot Dependencies** | Downloads and snapshots SUSHI dependencies defined in `sushi-config.yaml` |
-| **IG Publisher: Full Build** | Runs the complete IG build process (depends on SUSHI build) |
-| **Update IG Publisher** | Fetches the current IG Publisher release into `input-cache/` |
-| **Serve IG Locally** | Starts a local HTTP server to preview the generated IG at `http://localhost:8080` |
-| **Git: Commit Changes** | Stages everything and commits with a message you are prompted for |
-| **Download: IG Package** | Points at `output/full-ig.zip` for download |
-| **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP for download |
-
-Die Tasks rufen Kommandos auf, die das Container-Image mitbringt (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). Dadurch bleibt `tasks.json` stabil: ändert sich die Logik dahinter, kommt das mit dem nächsten Image, ohne dass diese Datei angefasst werden muss.
-
-### Quick Build
-
-The default build task is **"IG Publisher: Full Build"**. You can run it with:
-- `Cmd+Shift+B` (Mac) / `Ctrl+Shift+B` (Windows/Linux)
-
-## 📁 Project Structure
-
-```
-.
-├── .devcontainer/          # Dev container configuration
-│   └── devcontainer.json   # Points at the prebuilt image; settings come from it
-├── input/                  # IG input files
-│   ├── fsh/               # FSH (FHIR Shorthand) source files
-│   └── pagecontent/       # Markdown content for IG pages
-├── fsh-generated/         # Auto-generated FHIR resources (from SUSHI)
-├── output/                # Generated IG output (HTML, JSON, etc.)
-├── ig.ini                 # IG Publisher configuration
-├── sushi-config.yaml      # SUSHI configuration
-└── _genonce.sh           # Build script for IG generation
-```
-
-## 🔧 Tools Included
-
-### SUSHI (FSH Compiler)
-[SUSHI](https://fshschool.org/docs/sushi/) is the reference implementation for compiling FHIR Shorthand (FSH) into FHIR resources.
-
-**Usage:**
 ```bash
-sushi                    # Compile FSH files in current directory
-sushi --version          # Check SUSHI version
-sushi --help             # Show help
+git clone https://github.com/<owner>/<your-ig>.git
+cd <your-ig>
+code .
 ```
 
-### IG Publisher
-The [FHIR IG Publisher](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation) generates complete Implementation Guides from FHIR resources.
+Then click **"Reopen in Container"**, or press `F1` and run `Dev Containers: Reopen in Container`. The first start downloads the image once.
 
-**Usage:**
-```bash
-./_genonce.sh            # Run full IG build
-./_updatePublisher.sh    # Update IG Publisher
-```
+### 3. Build and look at it
 
-## 🎨 VS Code Extensions
+Press `F1` → `Tasks: Run Task` → **"IG Publisher: Full Build"** (or just `Cmd/Ctrl+Shift+B`). When it finishes, run the **"Serve IG Locally"** task; VS Code offers **"Open in Browser"** for the forwarded port.
 
-The following extensions are automatically installed in the container:
+### 4. Turn on publishing
 
-- **FHIR Development**:
-  - `gematikde.codfsh` - FSH language support
-  - `fhir-shorthand.vscode-fsh` - FSH syntax highlighting
-  - `yannick-lagger.vscode-fhir-tools` - FHIR development tools
+In your new repository, go to **Settings → Pages** and set the source to the `gh-pages` branch. From then on every push publishes a preview — see [Publishing](#publishing).
 
-- **General Development**:
-  - `redhat.vscode-yaml` - YAML language support
-  - `esbenp.prettier-vscode` - Code formatter
-  - `yzhang.markdown-all-in-one` - Markdown support
-  - `streetsidesoftware.code-spell-checker` - Spell checker
-  - `mhutchie.git-graph` - Git visualization
-  - `peakchen90.open-html-in-browser` - HTML preview
+## Your first profile
 
-## 🔄 Container und Publisher aktualisieren
+1. **Write FSH** in `input/fsh/`:
 
-Beim Start meldet der Container, womit du baust:
-
-```
-IG Publisher 2.3.2 (aus dem Image, 14.08.2026)
-```
-
-Ist das Jar älter als 14 Tage, kommt ein Hinweis dazu. Zum Aktualisieren gibt es zwei Wege — welcher der richtige ist, hängt davon ab, was du brauchst.
-
-### Nur den IG Publisher
-
-Task **„Update IG Publisher"** ausführen. Holt sofort das aktuelle HL7-Release, unabhängig vom Alter des Images, ohne Rebuild. Der richtige Weg, wenn du auf einen frischen Publisher-Fix wartest.
-
-### Das ganze Image
-
-Bringt neben dem Publisher auch SUSHI, `fhir-pkg-tool`, Extensions und die Container-Logik auf Stand. Das Image wird automatisch neu gebaut, sobald HL7 ein neues Publisher-Release veröffentlicht (in der Regel innerhalb von 24 Stunden).
-
-**Dein Container holt das nicht von allein.** `latest` ist ein bewegliches Tag: Docker verwendet weiter das lokal zwischengespeicherte Image, bis du es explizit neu ziehst.
-
-| Umgebung | Vorgehen |
-|---|---|
-| VS Code lokal | `Dev Containers: Rebuild Container`; wenn sich nichts tut, **Rebuild Without Cache** |
-| GitHub Codespaces | `Codespaces: Full Rebuild Container` |
-| Kommandozeile | `docker pull ghcr.io/gefyra/igpublisher-devcontainer-image:latest`, danach neu bauen |
-
-> [!IMPORTANT]
-> **Stoppen und Starten reicht nicht.** Ein angehaltener und wieder gestarteter Container — oder Codespace — ist derselbe Container: `postCreateCommand` läuft dabei nicht, das Image wird nicht neu gezogen. Wer seinen Codespace monatelang nur stoppt und startet, arbeitet monatelang mit demselben Publisher. Nach einem Rebuild bist du automatisch wieder aktuell.
-
-### Wo das Publisher-Jar liegt
-
-`input-cache/publisher.jar` ist normalerweise ein **Symlink** auf das Jar im Image (`/opt/ig/publisher.jar`). Dadurch existiert es einmal statt zweimal, und ein Rebuild bringt dich automatisch auf die Version des neuen Images.
-
-Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — nötig, weil in das Image hinein nicht geschrieben werden kann. Danach belegst du vorübergehend ~440 MB statt ~220 MB. Sobald das Image aufgeholt hat, tauscht der nächste Rebuild die Kopie automatisch gegen den Link zurück und gibt den Platz wieder frei.
-
-## 🌐 Veröffentlichter IG (GitHub Pages)
-
-GitHub Actions baut den IG und veröffentlicht ihn auf GitHub Pages. Die Seite hat drei Ebenen:
-
-```
-https://<owner>.github.io/<repo>/                    neuestes Release
-https://<owner>.github.io/<repo>/<version>/          archivierte Releases
-https://<owner>.github.io/<repo>/branches/<name>/    Vorschau je Branch
-```
-
-Für dieses Repository:
-
-| Was | URL |
-|---|---|
-| Neuestes Release | https://gefyra.github.io/IGPublisherDevContainer/ |
-| Vorschau `main` | https://gefyra.github.io/IGPublisherDevContainer/branches/main/ |
-| Vorschau Feature-Branch | `…/branches/<branch>/` |
-
-**Branch-Vorschauen** entstehen bei jedem Push auf einen Branch. Damit lässt sich ein Zwischenstand teilen oder gegen `main` vergleichen, ohne dass jemand selbst baut. Die Pipeline schreibt die URL in die Zusammenfassung des Laufs und kommentiert sie an den zugehörigen Pull Request.
-
-**Releases** entstehen, wenn du auf GitHub ein Release veröffentlichst. Der Build landet dann zugleich im Wurzelverzeichnis (als jeweils neuester Stand) und unter seiner Versionsnummer im Archiv. Der Tag muss zur `version` in `sushi-config.yaml` passen — sonst bricht der Lauf ab, statt einen Build unter einer falschen Nummer zu veröffentlichen.
-
-Ein paar Details, die erfahrungsgemäß Fragen aufwerfen:
-
-- Veröffentlicht wird nur bei **Push** und **Release**, nicht für Pull Requests aus Forks.
-- Der Branch-Name wird unverändert als Pfad verwendet: `feature/x` landet unter `branches/feature/x/`.
-- Wird ein Branch gelöscht, räumt der Workflow „Clean up branch previews" seine Vorschau weg — sofort beim Löschen, plus wöchentlich als Nachlese. Manuell anstoßen lässt er sich über „Run workflow".
-- **`full-ig.zip` wird nicht veröffentlicht.** Das Bündel ändert sich bei jedem Build vollständig, wird von der Seite nirgends verlinkt und würde die Historie unnötig aufblähen. Die Package-Tarballs (`package*.tgz`) bleiben dagegen erhalten, damit ein konsumierender IG auf einen Branch- oder Release-Stand zeigen kann.
-- `gh-pages` wird bei jeder Veröffentlichung als einzelner Root-Commit neu geschrieben. Pages liefert ohnehin nur den aktuellen Stand aus; mit Historie lägen dort sonst die Binärdateien jedes je gebauten Stands für immer.
-- Bis eine Änderung sichtbar ist, vergehen nach dem Build noch ein paar Minuten, bis Pages ausliefert.
-
-## 📖 Writing Your First IG
-
-1. Edit FSH files in `input/fsh/`:
    ```fsh
    Profile: MyPatient
    Parent: Patient
    * name 1..* MS
    ```
 
-2. Run SUSHI to compile:
-   - Use task: **"SUSHI: Build FSH"**
-   - Or run: `sushi`
+2. **Compile it** — task **"SUSHI: Build FSH"**, or run `sushi`. The result lands in `fsh-generated/`.
 
-3. Edit dependencies in `sushi-config.yaml` as needed.
+3. **Declare dependencies** in `sushi-config.yaml` when you build on other IGs.
 
-4. Snapshot dependencies:
-   - Use task: **"FHIR Package: Snapshot Dependencies"**
-   - Or run: `fhir-pkg-tool --sushi-deps-file sushi-config.yaml`
+4. **Fetch and snapshot them** — task **"FHIR Package: Download and Snapshot Dependencies"**. This resolves the packages your profiles derive from.
 
-5. Build the complete IG:
-   - Use task: **"IG Publisher: Full Build"**
-   - Or run: `./_genonce.sh`
+5. **Build the IG** — task **"IG Publisher: Full Build"**. This takes a few minutes on the first run.
 
-6. Preview your IG:
-   - Use task: **"Serve IG Locally"**
-   - Open `http://localhost:8080` in your browser
+6. **Read the report.** `output/qa.html` lists every validation message. It is the file to check before sharing anything.
 
-## 🐛 Troubleshooting
+New to FHIR Shorthand? [FSH School](https://fshschool.org/) is the place to learn it.
 
-### Container fails to start
-- Ensure Docker is running
-- Try rebuilding: `Dev Containers: Rebuild Container`
-- Check Docker logs for errors
+## Everyday workflow
 
-### Build errors
-- Update IG Publisher: Run **"Update IG Publisher"** task
-- Check `input/ignoreWarnings.txt` for known issues
-- Review `output/qa.html` for validation issues
+Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publisher: Full Build"** on `Cmd/Ctrl+Shift+B`.
 
-### Port 8080 ist belegt
-Dev Containers veröffentlicht Ports nicht auf Docker-Ebene, sondern leitet sie weiter. Deshalb hängt es davon ab, wo der Konflikt sitzt:
+| Task | What it does |
+|---|---|
+| **SUSHI: Build FSH** | Compiles FSH into FHIR resources |
+| **IG Publisher: Full Build** | Full IG build; runs SUSHI first |
+| **FHIR Package: Download and Snapshot Dependencies** | Resolves the dependencies from `sushi-config.yaml` |
+| **Update IG Publisher** | Fetches the current IG Publisher release |
+| **Serve IG Locally** | Serves `output/` for preview |
+| **Git: Commit Changes** | Stages everything and commits with a message you are prompted for |
+| **Download: IG Package** | Points at `output/full-ig.zip` |
+| **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP |
 
-- **Auf dem Host**: Der Container-Port bleibt 8080, der lokale Port kann abweichen. Ist 8080 lokal belegt, mappt VS Code laut Spec **still** auf einen freien Port — ohne Meldung, weil `requireLocalPort` standardmäßig `false` ist. Tippst du dann `localhost:8080` ein, antwortet die andere Anwendung, und der IG scheint zu fehlen.
+The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
 
-  Deshalb den IG immer über das **PORTS**-Panel öffnen (Rechtsklick → „Open in Browser"). Dort steht unter „Local Address" der tatsächlich verwendete Port. Wer wissen will, wem 8080 gehört:
+Prefer the terminal? `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` and `python3 -m http.server 8080` do the same jobs.
 
-  ```bash
-  lsof -nP -iTCP:8080 -sTCP:LISTEN     # macOS/Linux
-  ```
+## Publishing
 
-  `Code Helper` bedeutet: das ist der Forward des Dev Containers, alles in Ordnung.
+GitHub Actions builds the IG and publishes it to GitHub Pages. The site has three levels:
 
-  Dieses Ausweichen ist das Standardverhalten der Devcontainer-Spec, nicht eine Einstellung dieses Projekts. Praktisch ist es, weil so mehrere IG-Container gleichzeitig laufen können, ohne sich um den Port zu streiten.
+```
+https://<owner>.github.io/<repo>/                    newest release
+https://<owner>.github.io/<repo>/<version>/          archived releases
+https://<owner>.github.io/<repo>/branches/<name>/    one preview per branch
+```
 
-  Wer die stille Umleitung nicht mag, kann sie sichtbar machen — in der `devcontainer.json` des Projekts:
+**Branch previews** appear on every push to a branch, which lets you share work in progress or compare it against `main` without anyone building it themselves. The pipeline writes the URL into the run summary and comments it on the matching pull request.
 
-  ```json
-  "portsAttributes": { "8080": { "requireLocalPort": true } }
-  ```
+**Releases** happen when you publish a GitHub release. The build then lands both at the site root, as the current version, and in the archive under its version number. The tag has to match the `version` in `sushi-config.yaml` — otherwise the run fails rather than publishing a build under a number it does not carry.
 
-  Dann meldet VS Code, wenn 8080 lokal nicht verwendet werden kann. Den Port frei machen kann die Option nicht; sie sorgt nur dafür, dass du davon erfährst.
-- **Im Container**: Belegt dort bereits etwas den Port, bricht der Task mit `Address already in use` ab. Dann in `.vscode/tasks.json` beim Task „Serve IG Locally" einen anderen Port setzen, z. B. `python3 -m http.server 8081`.
+Worth knowing:
 
-In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den Codespaces-Proxy, nicht über lokale Ports.
+- Publishing happens on **push** and **release** only, not for pull requests from forks.
+- The branch name is used verbatim as a path: `feature/x` becomes `branches/feature/x/`.
+- Deleting a branch removes its preview, immediately and again in a weekly sweep. The "Clean up branch previews" workflow can also be started by hand via "Run workflow".
+- **`full-ig.zip` is not published.** It changes wholesale on every build and nothing on the site links to it. The package tarballs (`package*.tgz`) do stay, so a consuming IG can point at a branch build or a released version.
+- `gh-pages` is rewritten as a single root commit on every publish. Pages serves only the current tree, and keeping history would retain every past build's binaries forever.
+- Pages needs a few minutes after the build before a change is visible.
 
-### „Update IG Publisher" schlägt mit `curl: (23)` fehl
-Das Projekt ruft `_updatePublisher.sh` noch direkt auf, statt den Task auf `ig-update-publisher` zeigen zu lassen. `curl` schreibt dann durch den Symlink in das schreibgeschützte Image. Es geht nichts verloren; in `.vscode/tasks.json` beim Task „Update IG Publisher" setzen:
+## Staying up to date
+
+On every start the container reports what you are building with:
+
+```
+IG Publisher 2.3.2 (from the image, 2026-08-14)
+```
+
+Once the jar is older than 14 days it adds a hint. There are two ways to update, and which one is right depends on what you need.
+
+### Just the IG Publisher
+
+Run the **"Update IG Publisher"** task. It fetches the current HL7 release immediately, no matter how old the image is and without a rebuild. This is the way when you are waiting on a fresh publisher fix.
+
+### The whole image
+
+This also brings SUSHI, `fhir-pkg-tool`, the extensions and the container logic up to date. The image is rebuilt automatically whenever HL7 publishes a new IG Publisher release, usually within 24 hours.
+
+**Your container does not pick that up on its own.** `latest` is a moving tag: Docker keeps using the locally cached image until you explicitly pull it again.
+
+| Environment | What to do |
+|---|---|
+| VS Code, local | `Dev Containers: Rebuild Container`; if nothing changes, **Rebuild Without Cache** |
+| GitHub Codespaces | `Codespaces: Full Rebuild Container` |
+| Command line | `docker pull ghcr.io/gefyra/igpublisher-devcontainer-image:latest`, then rebuild |
+
+> [!IMPORTANT]
+> **Stopping and starting is not enough.** A container — or Codespace — that was stopped and started again is the same container: `postCreateCommand` does not run and no image is pulled. Anyone who only ever stops and starts their Codespace works with the same publisher for months. A rebuild puts you back on the current one.
+
+### Where the publisher jar lives
+
+`input-cache/publisher.jar` is normally a **symlink** to the jar inside the image (`/opt/ig/publisher.jar`). That way it exists once instead of twice, and a rebuild moves you to the new image's version automatically.
+
+The "Update IG Publisher" task replaces the link with a real file, which it has to: the image itself cannot be written to. You then use roughly 440 MB instead of 220 MB for a while. Once the image has caught up, the next rebuild swaps the copy back for the link and frees the space again.
+
+## Reference
+
+### What is in the container
+
+| Tool | Purpose |
+|---|---|
+| [IG Publisher](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation) | Builds the Implementation Guide |
+| [SUSHI](https://fshschool.org/docs/sushi/) | Compiles FHIR Shorthand into resources |
+| `fhir-pkg-tool` | Downloads and snapshots dependencies |
+| Java 21, Node 20, Ruby + Jekyll | Runtimes the publisher needs |
+| `python3` | Local preview server |
+| `zip` / `unzip`, `git`, `curl`, `sudo` | Everyday tools |
+
+The image lives in [Gefyra/igpublisher-devcontainer-image](https://github.com/Gefyra/igpublisher-devcontainer-image). It carries not only the toolchain but also the devcontainer configuration itself — user, forwarded ports, lifecycle commands and the VS Code extensions all come from its `devcontainer.metadata` label, which is why `.devcontainer/devcontainer.json` here is only a few lines long.
+
+### Project structure
+
+```
+.
+├── .devcontainer/
+│   └── devcontainer.json   # points at the prebuilt image; settings come from it
+├── .github/workflows/      # build, publish, clean up previews
+├── scripts/gh-pages.sh     # maintains the gh-pages branch
+├── input/
+│   ├── fsh/                # your FSH sources
+│   └── pagecontent/        # narrative pages, Markdown
+├── fsh-generated/          # SUSHI output (generated)
+├── output/                 # IG Publisher output (generated)
+├── input-cache/            # publisher jar and packages (generated)
+├── ig.ini                  # IG Publisher configuration
+└── sushi-config.yaml       # SUSHI configuration, dependencies, version
+```
+
+### VS Code extensions
+
+Installed automatically, delivered by the image:
+
+- **FHIR:** `gematikde.codfsh`, `fhir-shorthand.vscode-fsh`, `yannick-lagger.vscode-fhir-tools`
+- **General:** `redhat.vscode-yaml`, `esbenp.prettier-vscode`, `yzhang.markdown-all-in-one`, `streetsidesoftware.code-spell-checker`, `mhutchie.git-graph`, `peakchen90.open-html-in-browser`
+
+## Troubleshooting
+
+### The container will not start
+
+Make sure Docker is running, then try `Dev Containers: Rebuild Container`. The Docker logs usually say what went wrong.
+
+### The build fails
+
+`output/qa.html` holds the validation report and is the first place to look. Known, accepted messages belong in `input/ignoreWarnings.txt`. If the publisher itself looks like the problem, run the **"Update IG Publisher"** task.
+
+### Port 8080 is taken
+
+Dev Containers forwards ports rather than publishing them to Docker, so it depends on where the conflict is.
+
+**On the host:** the container port stays 8080 while the local port may differ. If 8080 is taken locally, VS Code **silently** maps to a free port, because `requireLocalPort` defaults to `false`. Typing `localhost:8080` then reaches whatever else owns that port, making the IG look like it is missing.
+
+When the server starts, VS Code shows a notification with the forwarded address and an **"Open in Browser"** button — the image asks for it by setting `onAutoForward: notify`. Use that button rather than typing the URL. Afterwards the address stays available in the **PORTS** panel under "Local Address". To find out who owns 8080:
+
+```bash
+lsof -nP -iTCP:8080 -sTCP:LISTEN     # macOS/Linux
+```
+
+`Code Helper` means it is the dev container's own forward and all is well.
+
+The silent remap is the devcontainer spec's default, not a setting of this project, and it is convenient: several IG containers can run at once without fighting over the port. To be told instead, add this to your `devcontainer.json`:
+
+```json
+"portsAttributes": { "8080": { "requireLocalPort": true } }
+```
+
+VS Code then reports when 8080 cannot be used locally. The option cannot free the port; it only makes sure you hear about it.
+
+**Inside the container:** if something already holds the port there, the task stops with `Address already in use`. Point the "Serve IG Locally" task at another port in `.vscode/tasks.json`, for example `python3 -m http.server 8081`.
+
+In Codespaces the question does not arise — forwarding goes through the Codespaces proxy, not through local ports.
+
+### "Update IG Publisher" fails with `curl: (23)`
+
+The task still calls `_updatePublisher.sh` directly instead of `ig-update-publisher`. `curl` then writes through the symlink into the read-only image. Nothing is lost; set the task's command in `.vscode/tasks.json` to:
 
 ```json
 "command": "ig-update-publisher"
 ```
 
-### Der Publisher ist trotz Rebuild alt
-Ein einfacher Rebuild kann das zwischengespeicherte Image weiterverwenden. **Rebuild Without Cache** bzw. in Codespaces **Full Rebuild Container** verwenden — oder für einen sofort aktuellen Publisher den Task „Update IG Publisher".
+### The publisher is old even after a rebuild
 
-### `input-cache/publisher.jar` ist auf dem Host ein toter Link
-Erwartet: der Link zeigt auf einen Pfad im Container. Innerhalb des Dev Containers ist er gültig, und `input-cache/` ist ohnehin in `.gitignore`.
+A plain rebuild may reuse the cached image. Use **Rebuild Without Cache**, or **Full Rebuild Container** in Codespaces — or run the **"Update IG Publisher"** task for an immediately current publisher.
 
-## 🤝 Contributing
+### `input-cache/publisher.jar` is a dead link on the host
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Expected: the link points at a path inside the container. It resolves inside the dev container, and `input-cache/` is in `.gitignore` anyway.
 
-## 📄 License
+## Contributing
 
-This project is open source and available under the [Apache License 2.0](LICENSE).
+Issues and pull requests are welcome.
 
-## 🔗 Useful Links
+## License
 
-- [FHIR Shorthand Documentation](https://fshschool.org/)
-- [IG Publisher Documentation](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation)
-- [FHIR Specification](https://hl7.org/fhir/)
-- [Dev Containers Documentation](https://code.visualstudio.com/docs/devcontainers/containers)
-- [GitHub Codespaces](https://github.com/features/codespaces)
+[Apache License 2.0](LICENSE)
 
-## 💬 Support
+## Links
 
-For questions or issues:
-- Open an [issue](https://github.com/Gefyra/IGPublisherDevContainer/issues)
-- Check the [FHIR Chat](https://chat.fhir.org/)
-- Visit [HL7 FHIR](https://www.hl7.org/fhir/)
+- [FSH School](https://fshschool.org/) — learning FHIR Shorthand
+- [SUSHI documentation](https://fshschool.org/docs/sushi/)
+- [IG Publisher documentation](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation)
+- [FHIR specification](https://hl7.org/fhir/)
+- [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) · [GitHub Codespaces](https://github.com/features/codespaces)
+- [FHIR Chat](https://chat.fhir.org/) — where to ask FHIR questions
