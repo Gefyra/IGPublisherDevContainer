@@ -5,3 +5,8 @@ Thumbs.db
 /output
 /temp
 /template
+# Artefakt des Tasks "Download: JSON Resources"
+json-resources.zip
+
+# IDE
+.idea/

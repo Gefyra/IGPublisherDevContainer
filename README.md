@@ -77,7 +77,7 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 | **FHIR Package: Download and Snapshot Dependencies** | Resolves the dependencies from `sushi-config.yaml` |
 | **Update IG Publisher** | Fetches the current IG Publisher release |
 | **Serve IG Locally** | Serves `output/` for preview |
-| **Git: Commit Changes** | Stages everything and commits with a message you are prompted for |
+| **Git: Commit & Push** | Stages everything, commits, and pushes the branch |
 | **Download: IG Package** | Points at `output/full-ig.zip` |
 | **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP |
 

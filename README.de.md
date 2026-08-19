@@ -77,7 +77,7 @@ Tasks werden über `F1` → `Tasks: Run Task` gestartet. Standard-Build-Task ist
 | **FHIR Package: Download and Snapshot Dependencies** | Löst die Abhängigkeiten aus `sushi-config.yaml` auf |
 | **Update IG Publisher** | Holt das aktuelle IG-Publisher-Release |
 | **Serve IG Locally** | Stellt `output/` zur Vorschau bereit |
-| **Git: Commit Changes** | Staged alles und committet mit abgefragter Nachricht |
+| **Git: Commit & Push** | Staged alles, committet und pusht den Branch |
 | **Download: IG Package** | Weist auf `output/full-ig.zip` hin |
 | **Download: JSON Resources** | Packt `fsh-generated/resources/*.json` als ZIP |
 
