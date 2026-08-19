@@ -77,11 +77,13 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 | **FHIR Package: Download and Snapshot Dependencies** | Resolves the dependencies from `sushi-config.yaml` |
 | **Update IG Publisher** | Fetches the current IG Publisher release |
 | **Serve IG Locally** | Serves `output/` for preview |
-| **Git: Commit Changes** | Stages everything and commits with a message you are prompted for |
+| **Git: Commit & Push** | Stages everything, commits, and pushes the branch |
 | **Download: IG Package** | Points at `output/full-ig.zip` |
 | **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP |
 
 The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
+
+**Git: Commit & Push** stages everything in one go, which is what makes it a single button. To pick individual files or read a diff before committing, use VS Code's **Source Control** panel instead — the task lists what it staged, but does not let you change it.
 
 Prefer the terminal? `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` and `python3 -m http.server 8080` do the same jobs.
 

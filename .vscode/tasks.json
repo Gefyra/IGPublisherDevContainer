@@ -74,7 +74,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Git: Commit Changes",
+      "label": "Git: Commit & Push",
       "type": "shell",
       "command": "ig-commit \"${input:commitMessage}\"",
       "presentation": {

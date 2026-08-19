@@ -33,9 +33,9 @@
       "tooltip": "Serve IG locally on port 8080"
     },
     {
-      "label": "$(git-commit) Commit",
-      "task": "Git: Commit Changes",
-      "tooltip": "Änderungen committen (speichert alle Dateien)"
+      "label": "$(git-commit) Commit & Push",
+      "task": "Git: Commit & Push",
+      "tooltip": "Alle Änderungen committen und auf den aktuellen Branch pushen"
     },
     {
       "label": "$(cloud-download) Download",
