@@ -83,6 +83,8 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 
 The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
 
+**Git: Commit & Push** stages everything in one go, which is what makes it a single button. To pick individual files or read a diff before committing, use VS Code's **Source Control** panel instead — the task lists what it staged, but does not let you change it.
+
 Prefer the terminal? `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` and `python3 -m http.server 8080` do the same jobs.
 
 ## Publishing
