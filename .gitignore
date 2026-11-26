@@ -10,3 +10,4 @@ json-resources.zip
 
 # IDE
 .idea/
+*.iml
