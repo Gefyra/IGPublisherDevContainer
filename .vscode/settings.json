@@ -28,6 +28,11 @@
           "label": "$(paintcan) Add Custom Template",
           "task": "Add Custom Template",
           "description": "Copy a starter template with logo and colors to custom-template/"
+        },
+        {
+          "label": "$(book) Add Example Page",
+          "task": "Add Example Page",
+          "description": "Add a page with examples of IG Publisher features"
         }
       ],
       "tooltip": "Build & Update Tasks"

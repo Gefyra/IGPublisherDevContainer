@@ -80,6 +80,7 @@ Tasks werden über `F1` → `Tasks: Run Task` gestartet. Standard-Build-Task ist
 | **Update IG Publisher** | Holt das aktuelle IG-Publisher-Release |
 | **Serve IG Locally** | Stellt `output/` zur Vorschau bereit |
 | **Add Custom Template** | Legt ein Start-Template mit Logo, Farben und Beispielen in `custom-template/` an und stellt `ig.ini` darauf um — siehe [Eigenes Aussehen](#eigenes-aussehen) |
+| **Add Example Page** | Ergänzt eine Seite mit funktionierenden Beispielen für Features des IG Publishers — Links, Konformitätsaussagen, Diagramme, Fragmente — und verlinkt sie im Menü |
 | **Git: Commit & Push** | Staged alles, committet und pusht den Branch |
 | **Download: IG Package** | Weist auf `output/full-ig.zip` hin |
 | **Download: AI Package** | Weist auf `output/<lang>/ai.zip` hin, den IG als Markdown für KI-Werkzeuge |
@@ -93,9 +94,11 @@ Im Terminal leisten `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file s
 
 ## Eigenes Aussehen
 
-Standardmäßig nutzt der IG das Standard-Template des Publishers (`template = fhir2.base.template#current` in `ig.ini`). Der Task **Add Custom Template** gibt ihm stattdessen ein eigenes: Er kopiert eine Vorlage nach `custom-template/` und stellt `ig.ini` darauf um. Die Vorlage baut auf dem bisherigen Template auf und ergänzt es nur — Gefyra-Logo im Header, Farben aus dem Logo, ein zusätzlicher Footer-Link und ein Hinweiskasten-Include für Seiten. `custom-template/README.md` erklärt jede Datei und was man als Nächstes ausprobieren kann.
+Standardmäßig nutzt der IG das Standard-Template des Publishers (`template = fhir2.base.template#current` in `ig.ini`). Der Task **Add Custom Template** gibt ihm stattdessen ein eigenes: Er kopiert eine Vorlage nach `custom-template/` und stellt `ig.ini` darauf um. Die Vorlage baut auf dem bisherigen Template auf und ergänzt es nur — Gefyra-Logo im Header, Farben aus dem Logo, ein zusätzlicher Footer-Link und ein Hinweiskasten-Include für Seiten. Zusätzlich legt der Task eine Seite an, **Template** im Menü, die diese Features live zeigt. `custom-template/README.md` erklärt jede Datei und was man als Nächstes ausprobieren kann.
 
-Existiert `custom-template/` bereits, lässt der Task es in Ruhe und meldet das nur. Zurück geht es, indem man die `template`-Zeile in `ig.ini` wiederherstellt (der Task hinterlässt die alte als Kommentar) und den Ordner löscht.
+Für die Features des IG Publishers selbst, unabhängig vom Template, ergänzt der Task **Add Example Page** die Seite **IG Features** im Menü: Links auf Ressourcen, Konformitätsaussagen, Mermaid-Diagramme, Ausschnitte aus Beispielen, generierte Tabellen und Listen, jeweils mit Quelltext neben dem Ergebnis. Sie nutzt ein Profil und ein Beispiel des eigenen IG, deshalb vorher SUSHI laufen lassen.
+
+Existieren `custom-template/` oder die Seite bereits, lassen die Tasks sie in Ruhe und melden das nur. Zurück geht es, indem man die `template`-Zeile in `ig.ini` wiederherstellt (der Task hinterlässt die alte als Kommentar) und den Ordner löscht.
 
 ## Veröffentlichen
 
