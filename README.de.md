@@ -158,7 +158,7 @@ Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — not
 | [IG Publisher](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation) | Baut den Implementation Guide |
 | [SUSHI](https://fshschool.org/docs/sushi/) | Übersetzt FHIR Shorthand in Ressourcen |
 | `fhir-pkg-tool` | Lädt Abhängigkeiten und erzeugt Snapshots |
-| Java 21, Node 20, Ruby + Jekyll | Laufzeiten des Publishers |
+| Java 21, Node 24, Ruby + Jekyll | Laufzeiten des Publishers |
 | `python3` | Lokaler Vorschau-Server |
 | `zip` / `unzip`, `git`, `curl`, `sudo` | Allgemeine Werkzeuge |
 
