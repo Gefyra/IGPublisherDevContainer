@@ -114,8 +114,8 @@
     {
       "id": "commitMessage",
       "type": "promptString",
-      "description": "Commit-Nachricht eingeben",
-      "default": "Änderungen gespeichert"
+      "description": "Commit message",
+      "default": "Save changes"
     }
   ]
 }

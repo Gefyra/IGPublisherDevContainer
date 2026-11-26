@@ -35,7 +35,7 @@
     {
       "label": "$(git-commit) Commit & Push",
       "task": "Git: Commit & Push",
-      "tooltip": "Alle Änderungen committen und auf den aktuellen Branch pushen"
+      "tooltip": "Commit all changes and push the current branch"
     },
     {
       "label": "$(cloud-download) Download",
@@ -43,15 +43,15 @@
         {
           "label": "$(file-zip) Download IG",
           "task": "Download: IG Package",
-          "description": "Download full-ig.zip aus output/"
+          "description": "Download full-ig.zip from output/"
         },
         {
           "label": "$(file-code) Download JSON Files",
           "task": "Download: JSON Resources",
-          "description": "JSON-Dateien aus fsh-generated/resources als ZIP"
+          "description": "JSON files from fsh-generated/resources as a ZIP"
         }
       ],
-      "tooltip": "Download Build-Artefakte"
+      "tooltip": "Download build artifacts"
     }
   ],
   "github.copilot.chat.startupMessage": false,
