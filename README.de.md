@@ -152,9 +152,11 @@ Bringt außerdem SUSHI, `fhir-pkg-tool`, die Extensions und die Container-Logik 
 
 ### Ablage des Publisher-Jars
 
-`input-cache/publisher.jar` ist im Normalfall ein **Symlink** auf das Jar im Image (`/opt/ig/publisher.jar`). So existiert es einmal statt zweimal, und ein Rebuild führt automatisch auf die Version des neuen Images.
+Die Build-Skripte suchen das Jar zuerst in `input-cache/publisher.jar`, dann in `../publisher.jar`. Der Container verlinkt Letzteres — `/workspaces/publisher.jar`, neben dem IG-Ordner — auf das Jar im Image (`/opt/ig/publisher.jar`). So existiert es einmal statt zweimal, und ein Rebuild führt automatisch auf die Version des neuen Images.
 
-Der Task „Update IG Publisher" ersetzt den Link durch eine echte Datei — notwendig, weil in das Image nicht geschrieben werden kann. Der Platzbedarf steigt dadurch vorübergehend von rund 220 MB auf 440 MB. Sobald das Image aufgeholt hat, tauscht der nächste Rebuild die Kopie gegen den Link zurück und gibt den Platz wieder frei.
+Der Link liegt bewusst außerhalb des IG-Ordners: IG Publisher 3.x verweigert den Build, wenn im IG-Ordner ein Symlink nach außen zeigt. Ältere Versionen des Images verlinkten `input-cache/publisher.jar`; ein Rebuild entfernt diesen Link.
+
+Der Task „Update IG Publisher" legt eine echte Datei in `input-cache/` ab, die dann Vorrang hat. Der Platzbedarf steigt dadurch vorübergehend von rund 220 MB auf 440 MB. Sobald das Image aufgeholt hat, entfernt der nächste Rebuild die Kopie und gibt den Platz wieder frei.
 
 ## Referenz
 
@@ -234,7 +236,7 @@ In Codespaces stellt sich die Frage nicht — die Weiterleitung läuft über den
 
 ### „Update IG Publisher" schlägt mit `curl: (23)` fehl
 
-Der Task ruft noch direkt `_updatePublisher.sh` auf statt `ig-update-publisher`. `curl` schreibt dann durch den Symlink in das schreibgeschützte Image. Es geht nichts verloren; in `.vscode/tasks.json` setzen:
+Der Task ruft noch direkt `_updatePublisher.sh` auf statt `ig-update-publisher`. `curl` schreibt dann durch den Link `../publisher.jar` in das schreibgeschützte Image. Es geht nichts verloren; in `.vscode/tasks.json` setzen:
 
 ```json
 "command": "ig-update-publisher"
@@ -244,9 +246,9 @@ Der Task ruft noch direkt `_updatePublisher.sh` auf statt `ig-update-publisher`.
 
 Ein einfacher Rebuild kann das zwischengespeicherte Image weiterverwenden. **Rebuild Without Cache** verwenden, in Codespaces **Full Rebuild Container** — oder für einen sofort aktuellen Publisher den Task **„Update IG Publisher"**.
 
-### `input-cache/publisher.jar` ist auf dem Host ein toter Link
+### „symbolic link to somewhere outside it: input-cache/publisher.jar"
 
-Das ist erwartbar: der Link verweist auf einen Pfad im Container. Innerhalb des Dev Containers ist er gültig, und `input-cache/` steht ohnehin in `.gitignore`.
+Der Container stammt aus einem Image vor diesem Fix, das den Publisher in `input-cache/` verlinkt hat. Den Container neu bauen, oder den Task **„Update IG Publisher"** ausführen, der den Link durch eine echte Datei ersetzt.
 
 ## Mitwirken
 

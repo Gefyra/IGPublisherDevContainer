@@ -152,9 +152,11 @@ This also brings SUSHI, `fhir-pkg-tool`, the extensions and the container logic 
 
 ### Where the publisher jar lives
 
-`input-cache/publisher.jar` is normally a **symlink** to the jar inside the image (`/opt/ig/publisher.jar`). That way it exists once instead of twice, and a rebuild moves you to the new image's version automatically.
+The build scripts look for the jar in `input-cache/publisher.jar` first and in `../publisher.jar` second. The container links the latter — `/workspaces/publisher.jar`, next to your IG's folder — to the jar inside the image (`/opt/ig/publisher.jar`). That way it exists once instead of twice, and a rebuild moves you to the new image's version automatically.
 
-The "Update IG Publisher" task replaces the link with a real file, which it has to: the image itself cannot be written to. You then use roughly 440 MB instead of 220 MB for a while. Once the image has caught up, the next rebuild swaps the copy back for the link and frees the space again.
+The link sits outside the IG's folder on purpose: IG Publisher 3.x refuses to build an IG whose folder holds a symbolic link leading out of it. Older versions of the image linked `input-cache/publisher.jar`; a rebuild removes that link.
+
+The "Update IG Publisher" task puts a real file into `input-cache/`, which then takes precedence. You use roughly 440 MB instead of 220 MB for a while. Once the image has caught up, the next rebuild removes the copy and frees the space again.
 
 ## Reference
 
@@ -234,7 +236,7 @@ In Codespaces the question does not arise — forwarding goes through the Codesp
 
 ### "Update IG Publisher" fails with `curl: (23)`
 
-The task still calls `_updatePublisher.sh` directly instead of `ig-update-publisher`. `curl` then writes through the symlink into the read-only image. Nothing is lost; set the task's command in `.vscode/tasks.json` to:
+The task still calls `_updatePublisher.sh` directly instead of `ig-update-publisher`. `curl` then writes through the link `../publisher.jar` into the read-only image. Nothing is lost; set the task's command in `.vscode/tasks.json` to:
 
 ```json
 "command": "ig-update-publisher"
@@ -244,9 +246,9 @@ The task still calls `_updatePublisher.sh` directly instead of `ig-update-publis
 
 A plain rebuild may reuse the cached image. Use **Rebuild Without Cache**, or **Full Rebuild Container** in Codespaces — or run the **"Update IG Publisher"** task for an immediately current publisher.
 
-### `input-cache/publisher.jar` is a dead link on the host
+### "symbolic link to somewhere outside it: input-cache/publisher.jar"
 
-Expected: the link points at a path inside the container. It resolves inside the dev container, and `input-cache/` is in `.gitignore` anyway.
+The container was created from an image older than this fix, which linked the publisher into `input-cache/`. Rebuild the container, or run the **"Update IG Publisher"** task, which replaces the link with a real file.
 
 ## Contributing
 
