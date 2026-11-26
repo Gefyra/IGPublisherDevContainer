@@ -109,6 +109,7 @@ Wissenswert:
 - Der Branch-Name wird unverändert als Pfad verwendet: `feature/x` landet unter `branches/feature/x/`.
 - Beim Löschen eines Branches verschwindet seine Vorschau — sofort und noch einmal in der wöchentlichen Nachlese. Der Workflow „Clean up branch previews" lässt sich über „Run workflow" auch manuell starten.
 - **`full-ig.zip` wird nicht veröffentlicht.** Es ändert sich bei jedem Build vollständig und wird von der Seite nirgends verlinkt. Die Package-Tarballs (`package*.tgz`) bleiben erhalten, damit ein konsumierender IG auf einen Branch- oder Release-Stand verweisen kann.
+- Die Seite **Downloads** (`input/pagecontent/downloads.md`) verlinkt das Package, Definitionen und Beispiele sowie `ai.zip` — den IG als Markdown für KI-Werkzeuge. Außerdem enthält sie Abhängigkeitstabelle, Cross-Version-Analyse und IP-Statements, die der Publisher in jedem IG erwartet.
 - `gh-pages` wird bei jeder Veröffentlichung als einzelner Root-Commit neu geschrieben. Pages liefert ohnehin nur den aktuellen Stand aus; mit Historie lägen dort die Binärdateien jedes je gebauten Stands dauerhaft.
 - Nach dem Build vergehen einige Minuten, bis Pages die Änderung ausliefert.
 

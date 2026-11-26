@@ -109,6 +109,7 @@ Worth knowing:
 - The branch name is used verbatim as a path: `feature/x` becomes `branches/feature/x/`.
 - Deleting a branch removes its preview, immediately and again in a weekly sweep. The "Clean up branch previews" workflow can also be started by hand via "Run workflow".
 - **`full-ig.zip` is not published.** It changes wholesale on every build and nothing on the site links to it. The package tarballs (`package*.tgz`) do stay, so a consuming IG can point at a branch build or a released version.
+- The **Downloads** page (`input/pagecontent/downloads.md`) links the package, the definitions and examples, and `ai.zip` — the guide as Markdown for AI tools. It also carries the dependency table, cross-version analysis and IP statements the publisher expects every IG to show.
 - `gh-pages` is rewritten as a single root commit on every publish. Pages serves only the current tree, and keeping history would retain every past build's binaries forever.
 - Pages needs a few minutes after the build before a change is visible.
 
