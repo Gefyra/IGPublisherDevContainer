@@ -64,6 +64,8 @@ In your new repository, go to **Settings → Pages** and set the source to the `
 
 6. **Read the report.** `output/qa.html` lists every validation message. It is the file to check before sharing anything.
 
+**Writing in German?** The IG Publisher assumes English and renders the text it generates — headings, labels, table headers — in English. To switch, uncomment `parameters:` and the `i18n-default-lang: de` line beneath it in `sushi-config.yaml`. Other language codes work the same way.
+
 New to FHIR Shorthand? [FSH School](https://fshschool.org/) is the place to learn it.
 
 ## Everyday workflow

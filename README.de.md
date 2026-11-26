@@ -64,6 +64,8 @@ Im neuen Repository unter **Settings → Pages** als Quelle den Branch `gh-pages
 
 6. **Bericht prüfen.** `output/qa.html` enthält sämtliche Validierungsmeldungen und sollte vor jeder Weitergabe gelesen werden.
 
+**IG auf Deutsch?** Der IG Publisher geht von Englisch aus und erzeugt seine eigenen Texte — Überschriften, Beschriftungen, Tabellenköpfe — auf Englisch. Zum Umstellen in `sushi-config.yaml` `parameters:` und die Zeile `i18n-default-lang: de` darunter einkommentieren. Andere Sprachcodes funktionieren genauso.
+
 Einstieg in FHIR Shorthand: [FSH School](https://fshschool.org/).
 
 ## Täglicher Ablauf
