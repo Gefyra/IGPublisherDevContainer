@@ -75,12 +75,14 @@ jobs:
           set -euo pipefail
           sushi ${{ env.INPUT_DIR }}
 
-      # Run the HL7 FHIR IG Publisher
+      # Run the HL7 FHIR IG Publisher. -allow-committed-scripts accepts the
+      # _genonce/_build/_updatePublisher scripts this template ships in its
+      # root; without it IG Publisher 3.x reports them as an error in qa.html.
       - name: Build IG
         shell: bash
         run: |
           set -euo pipefail
-          igpublisher -ig ${{ env.INPUT_DIR }} -no-sushi
+          igpublisher -ig ${{ env.INPUT_DIR }} -no-sushi -allow-committed-scripts
 
       # Uploaded before the QA gate, so a failing build still leaves qa.html
       # behind to look at.

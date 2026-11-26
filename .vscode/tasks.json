@@ -17,7 +17,7 @@
     {
       "label": "IG Publisher: Full Build",
       "type": "shell",
-      "command": "./_genonce.sh -no-sushi",
+      "command": "./_genonce.sh -no-sushi -allow-committed-scripts",
       "group": {
         "kind": "build",
         "isDefault": true
