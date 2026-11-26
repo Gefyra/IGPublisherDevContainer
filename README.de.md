@@ -79,6 +79,7 @@ Tasks werden über `F1` → `Tasks: Run Task` gestartet. Standard-Build-Task ist
 | **FHIR Package: Download and Snapshot Dependencies** | Löst die Abhängigkeiten aus `sushi-config.yaml` auf |
 | **Update IG Publisher** | Holt das aktuelle IG-Publisher-Release |
 | **Serve IG Locally** | Stellt `output/` zur Vorschau bereit |
+| **Add Custom Template** | Legt ein Start-Template mit Logo, Farben und Beispielen in `custom-template/` an und stellt `ig.ini` darauf um — siehe [Eigenes Aussehen](#eigenes-aussehen) |
 | **Git: Commit & Push** | Staged alles, committet und pusht den Branch |
 | **Download: IG Package** | Weist auf `output/full-ig.zip` hin |
 | **Download: AI Package** | Weist auf `output/<lang>/ai.zip` hin, den IG als Markdown für KI-Werkzeuge |
@@ -89,6 +90,12 @@ Die Tasks rufen Kommandos auf, die das Container-Image mitbringt (`ig-update-pub
 **Git: Commit & Push** staged pauschal alles — nur so bleibt es ein einzelner Button. Für einzelne Dateien oder einen Blick auf den Diff vor dem Commit eignet sich das **Source-Control**-Panel von VS Code: der Task zeigt zwar an, was er gestaged hat, lässt aber keine Auswahl zu.
 
 Im Terminal leisten `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` und `python3 -m http.server 8080` dasselbe.
+
+## Eigenes Aussehen
+
+Standardmäßig nutzt der IG das Standard-Template des Publishers (`template = fhir2.base.template#current` in `ig.ini`). Der Task **Add Custom Template** gibt ihm stattdessen ein eigenes: Er kopiert eine Vorlage nach `custom-template/` und stellt `ig.ini` darauf um. Die Vorlage baut auf dem bisherigen Template auf und ergänzt es nur — Gefyra-Logo im Header, Farben aus dem Logo, ein zusätzlicher Footer-Link und ein Hinweiskasten-Include für Seiten. `custom-template/README.md` erklärt jede Datei und was man als Nächstes ausprobieren kann.
+
+Existiert `custom-template/` bereits, lässt der Task es in Ruhe und meldet das nur. Zurück geht es, indem man die `template`-Zeile in `ig.ini` wiederherstellt (der Task hinterlässt die alte als Kommentar) und den Ordner löscht.
 
 ## Veröffentlichen
 

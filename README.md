@@ -79,6 +79,7 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 | **FHIR Package: Download and Snapshot Dependencies** | Resolves the dependencies from `sushi-config.yaml` |
 | **Update IG Publisher** | Fetches the current IG Publisher release |
 | **Serve IG Locally** | Serves `output/` for preview |
+| **Add Custom Template** | Copies a starter template with logo, colors and examples to `custom-template/` and switches `ig.ini` to it — see [Your own look](#your-own-look) |
 | **Git: Commit & Push** | Stages everything, commits, and pushes the branch |
 | **Download: IG Package** | Points at `output/full-ig.zip` |
 | **Download: AI Package** | Points at `output/<lang>/ai.zip`, the guide as Markdown for AI tools |
@@ -89,6 +90,12 @@ The tasks call commands the container image ships (`ig-update-publisher`, `ig-co
 **Git: Commit & Push** stages everything in one go, which is what makes it a single button. To pick individual files or read a diff before committing, use VS Code's **Source Control** panel instead — the task lists what it staged, but does not let you change it.
 
 Prefer the terminal? `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` and `python3 -m http.server 8080` do the same jobs.
+
+## Your own look
+
+By default the IG uses the publisher's standard template (`template = fhir2.base.template#current` in `ig.ini`). The **Add Custom Template** task gives it a template of its own instead: it copies a starter into `custom-template/` and points `ig.ini` at it. The starter builds on the template the IG used so far and only adds to it — the Gefyra logo in the header, colors from the logo, an extra footer link and a note-box include for pages. `custom-template/README.md` explains each file and what to try next.
+
+Once `custom-template/` exists, the task leaves it alone and just says so. To go back, restore the `template` line in `ig.ini` (the task keeps the old one as a comment) and delete the folder.
 
 ## Publishing
 
