@@ -1,0 +1,13 @@
+# Keeps the actions in .github/workflows current. Dependabot's PRs build
+# through the pull_request event (see ig-publisher.yml), so an upgrade that
+# breaks the IG build shows up on the PR before it is merged.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
