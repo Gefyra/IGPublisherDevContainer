@@ -118,7 +118,7 @@ Wissenswert:
 Bei jedem Start meldet der Container die verwendete Version:
 
 ```
-IG Publisher 2.3.2 (from the image, 2026-08-14)
+IG Publisher 3.0.6 (from the image, 2026-11-25)
 ```
 
 Ist das Jar älter als 14 Tage, erscheint zusätzlich ein Hinweis. Zum Aktualisieren gibt es zwei Wege.
