@@ -46,6 +46,11 @@
           "description": "Download full-ig.zip from output/"
         },
         {
+          "label": "$(sparkle) Download AI Package",
+          "task": "Download: AI Package",
+          "description": "Download ai.zip, the guide as Markdown for AI tools"
+        },
+        {
           "label": "$(file-code) Download JSON Files",
           "task": "Download: JSON Resources",
           "description": "JSON files from fsh-generated/resources as a ZIP"

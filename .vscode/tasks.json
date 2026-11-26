@@ -98,6 +98,18 @@
       "problemMatcher": []
     },
     {
+      "label": "Download: AI Package",
+      "type": "shell",
+      "command": "ig-ai-package",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Download: JSON Resources",
       "type": "shell",
       "command": "ig-json-resources",

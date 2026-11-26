@@ -81,9 +81,10 @@ Tasks werden über `F1` → `Tasks: Run Task` gestartet. Standard-Build-Task ist
 | **Serve IG Locally** | Stellt `output/` zur Vorschau bereit |
 | **Git: Commit & Push** | Staged alles, committet und pusht den Branch |
 | **Download: IG Package** | Weist auf `output/full-ig.zip` hin |
+| **Download: AI Package** | Weist auf `output/<lang>/ai.zip` hin, den IG als Markdown für KI-Werkzeuge |
 | **Download: JSON Resources** | Packt `fsh-generated/resources/*.json` als ZIP |
 
-Die Tasks rufen Kommandos auf, die das Container-Image mitbringt (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). Dadurch bleibt `tasks.json` stabil: ändert sich die Logik dahinter, kommt sie mit dem nächsten Image, ohne dass diese Datei angepasst werden muss.
+Die Tasks rufen Kommandos auf, die das Container-Image mitbringt (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-ai-package`, `ig-json-resources`). Dadurch bleibt `tasks.json` stabil: ändert sich die Logik dahinter, kommt sie mit dem nächsten Image, ohne dass diese Datei angepasst werden muss.
 
 **Git: Commit & Push** staged pauschal alles — nur so bleibt es ein einzelner Button. Für einzelne Dateien oder einen Blick auf den Diff vor dem Commit eignet sich das **Source-Control**-Panel von VS Code: der Task zeigt zwar an, was er gestaged hat, lässt aber keine Auswahl zu.
 

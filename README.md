@@ -81,9 +81,10 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 | **Serve IG Locally** | Serves `output/` for preview |
 | **Git: Commit & Push** | Stages everything, commits, and pushes the branch |
 | **Download: IG Package** | Points at `output/full-ig.zip` |
+| **Download: AI Package** | Points at `output/<lang>/ai.zip`, the guide as Markdown for AI tools |
 | **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP |
 
-The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
+The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-ai-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
 
 **Git: Commit & Push** stages everything in one go, which is what makes it a single button. To pick individual files or read a diff before committing, use VS Code's **Source Control** panel instead — the task lists what it staged, but does not let you change it.
 
