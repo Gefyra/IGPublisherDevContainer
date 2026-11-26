@@ -13,12 +13,12 @@ The [FHIR package](../package.tgz) of this guide, for validators and tools that 
 
 ### Dependencies
 
-{% lang-fragment dependency-table.xhtml %}
+{% include dependency-table.xhtml %}
 
 ### Cross Version Analysis
 
-{% lang-fragment cross-version-analysis.xhtml %}
+{% include cross-version-analysis.xhtml %}
 
 ### IP Statements
 
-{% lang-fragment ip-statements.xhtml %}
+{% include ip-statements.xhtml %}
