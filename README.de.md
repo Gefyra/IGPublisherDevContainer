@@ -209,7 +209,18 @@ Prüfen, ob Docker läuft, anschließend `Dev Containers: Rebuild Container`. Di
 
 ### Der Build schlägt fehl
 
-`output/qa.html` enthält den Validierungsbericht und ist die erste Anlaufstelle. Bekannte, akzeptierte Meldungen gehören in `input/ignoreWarnings.txt`. Deutet das Problem auf den Publisher selbst, hilft der Task **„Update IG Publisher"**.
+`output/qa.html` enthält den Validierungsbericht und ist die erste Anlaufstelle. Bekannte, akzeptierte Meldungen gehören in `input/ignoreWarnings.txt` (siehe nächster Abschnitt). Deutet das Problem auf den Publisher selbst, hilft der Task **„Update IG Publisher"**.
+
+### Geprüfte und akzeptierte Meldungen
+
+`input/ignoreWarnings.txt` führt Meldungen auf, die bekannt und in Ordnung sind. Jeder Eintrag ist eine Zeile mit dem Meldungstext, darüber eine Zeile mit `# ` und der Begründung. `%` am Anfang oder Ende steht für beliebigen Text, `%some-code%` trifft also jede Meldung, die `some-code` enthält, egal in welcher Sprache der Bericht ist.
+
+- **Warnungen und Hinweise**, auf die ein Eintrag passt, verschwinden aus dem Bericht. Unter „Suppressed Messages“ listet der QA-Bericht jeden Eintrag mit der Zahl seiner Treffer auf, ein veralteter fällt also als „(0 uses)“ auf.
+- **Errors** lassen sich nicht ausblenden. Der Bericht behält sie, zeigt aber die Begründung als „Editor's Comment“ daneben.
+
+Die Pipeline schlägt bei jedem Error fehl, der im Bericht bleibt. Für einen bekannten Error, an dem das IG keine Schuld trägt, hat der Schritt „Check IG validation results“ in `.github/workflows/ig-publisher.yml` zusätzlich eine `filters`-Liste.
+
+Die Datei bringt für beides ein Beispiel mit. Das fhir2-Template setzt den IG-Parameter `path-image-source`, den das Tools-Paket von HL7 noch nicht kennt, also bekommt jedes IG vier Errors, die nicht seine eigenen sind. `ignoreWarnings.txt` kommentiert sie im Bericht, der Workflow filtert genau diese. Beide sagen, dass sie weg können, sobald der Eintrag „(0 uses)“ zeigt.
 
 ### Port 8080 ist belegt
 

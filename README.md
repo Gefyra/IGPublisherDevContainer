@@ -209,7 +209,18 @@ Make sure Docker is running, then try `Dev Containers: Rebuild Container`. The D
 
 ### The build fails
 
-`output/qa.html` holds the validation report and is the first place to look. Known, accepted messages belong in `input/ignoreWarnings.txt`. If the publisher itself looks like the problem, run the **"Update IG Publisher"** task.
+`output/qa.html` holds the validation report and is the first place to look. Known, accepted messages belong in `input/ignoreWarnings.txt` (see the next section). If the publisher itself looks like the problem, run the **"Update IG Publisher"** task.
+
+### Messages you have checked and accept
+
+`input/ignoreWarnings.txt` lists messages that are known and fine. Each entry is a line with the message text, below a line starting with `# ` that says why. `%` at the start or end matches any text there, so `%some-code%` matches every message containing `some-code`, in whatever language the report is in.
+
+- **Warnings and information** that match an entry disappear from the report. Under "Suppressed Messages" the QA report lists every entry with how often it matched, so a stale one shows up as "(0 uses)".
+- **Errors** can't be hidden. The report keeps them but shows the reason next to each, as "Editor's Comment".
+
+The pipeline fails on every error that is left in the report. For an error that is known and not the IG's fault, the "Check IG validation results" step in `.github/workflows/ig-publisher.yml` has a `filters` list as well.
+
+The file ships with an example of both. The fhir2 template sets the IG parameter `path-image-source`, which the HL7 tools package doesn't know yet, so every IG gets four errors that aren't its own. `ignoreWarnings.txt` comments them in the report, and the workflow filters exactly those. Both say to remove them once the entry shows "(0 uses)".
 
 ### Port 8080 is taken
 
