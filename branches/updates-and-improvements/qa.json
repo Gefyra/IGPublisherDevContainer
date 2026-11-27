@@ -1,0 +1,20 @@
+{
+  "url" : "http://gefyra.info/training/ImplementationGuide/info.gefyra.training",
+  "name" : "SchulungsIG",
+  "title" : "Schulungs-IG",
+  "description" : "Beispiel-Implementation-Guide als Ausgangspunkt für eigene FHIR-Profile mit SUSHI und dem IG Publisher",
+  "status" : "draft",
+  "package-id" : "info.gefyra.training",
+  "ig-ver" : "0.1.0",
+  "date" : "Fri, 27 Nov, 2026 10:54:11 +0000",
+  "dateISO8601" : "2026-11-27T10:54:11+00:00",
+  "errs" : 4,
+  "warnings" : 2,
+  "hints" : 3,
+  "broken-links" : 0,
+  "suppressed-hints" : 4,
+  "suppressed-warnings" : 0,
+  "version" : "4.0.1",
+  "tool" : "6.0.0-snapshot1 (3)",
+  "maxMemory" : 867132280
+}

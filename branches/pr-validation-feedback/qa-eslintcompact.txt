@@ -1,0 +1,13 @@
+SchulungsIG
+=========================================
+
+Generic: line 0, col 0, Warning - The HTML fragment 'ip-statements.xhtml' is not included anywhere in the produced implementation guide (NOTFOUND)
+Generic: line 0, col 0, Warning - An HTML fragment from the set [cross-version-analysis.xhtml, cross-version-analysis-inline.xhtml] is not included anywhere in the produced implementation guide (NOTFOUND)
+Generic: line 0, col 0, Warning - An HTML fragment from the set [dependency-table.xhtml, dependency-table-short.xhtml, dependency-table-nontech.xhtml] is not included anywhere in the produced implementation guide (NOTFOUND)
+Generic: line 0, col 0, Warning - The HTML fragment 'globals-table.xhtml' is not included anywhere in the produced implementation guide (NOTFOUND)
+/__w/IGPublisherDevContainer/IGPublisherDevContainer/fsh-generated/resources/ImplementationGuide-info.gefyra.training.json: line 0, col 0, Info - The resource ImplementationGuide/info.gefyra.training could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root) (BUSINESSRULE)
+/__w/IGPublisherDevContainer/IGPublisherDevContainer/fsh-generated/resources/StructureDefinition-MyPatient.json: line 1, col 16994, Info - The extension http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet|5.3.0 is deprecated with the note: 'Use additionalBinding extension or element instead' (BUSINESSRULE)
+/__w/IGPublisherDevContainer/IGPublisherDevContainer/fsh-generated/resources/StructureDefinition-MyPatient.json: line 0, col 0, Info - The resource StructureDefinition/MyPatient could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root) (BUSINESSRULE)
+
+err = 0, warn = 4, info = 3
+IG Publisher Version: 2.3.2

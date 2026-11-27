@@ -1,0 +1,143 @@
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>IP Review</title>
+    <link rel="stylesheet" href="fhir.css"/>
+  </head>
+  <body>
+    <h1>IP Review</h1>
+    <h2>Unattributed Code Systems</h2>
+    <ul></ul>
+    <h2>Copyright Fragment</h2>
+    <p>
+This fragment is available on       <a href="en/downloads.html">en/downloads.html</a>
+    </p>
+    <div>No use of external IP (other than from the FHIR specification)</div>
+    <h2>Copyright and Registered Trademark Uses</h2>
+    <ul>
+      <li>
+
+
+
+
+          IG &copy; 2026+ Gefyra GmbH.  
+          Package info.gefyra.training#0.1.0 based on FHIR 4.0.1.
+          Generated 
+  
+    2026-11-27
+  
+
+          
+          
+                      Links: Table of Contents |
+                 QA Report
+                 
+                
+          
+         (        <a href="en/toc.html">src</a>
+)
+      </li>
+      <li>
+
+            &reg;&copy; HL7 |
+             
+                Creative Commons 0
+         (        <a href="searchform.html">src</a>
+)
+      </li>
+      <li>
+
+          Schulungs-IG  &reg;&copy; HL7 |
+             
+                Creative Commons 0
+         (        <a href="en/searchform.html">src</a>
+)
+      </li>
+      <li>
+  // 35063a59-076a-4b7e-b060-5f5fec672c46
+if (typeof htColToggle === 'undefined') {
+  window.htColApply = function(k, show) {
+    document.querySelectorAll('[data-col="'+k+'"]').forEach(function(c) { c.style.display = show ? '' : 'none'; });
+    document.querySelectorAll('input[data-col-toggle="'+k+'"]').forEach(function(c) { c.checked = show; });
+  };
+  window.htColToggle = function(cb) {
+    var k = cb.getAttribute('data-col-toggle');
+    try { if (cb.checked) { localStorage.removeItem('ht-col-'+k); } else { localStorage.setItem('ht-col-'+k, 'false'); } } catch (e) { }
+    htColApply(k, cb.checked);
+  };
+}
+document.querySelectorAll('#ctMyPatientMo input[data-col-toggle]').forEach(function(cb) {
+  var k = cb.getAttribute('data-col-toggle');
+  var s = null;
+  try { s = localStorage.getItem('ht-col-'+k); } catch (e) { }
+  if (s === 'false') { htColApply(k, false); }
+});
+ (        <a href="en/StructureDefinition-MyPatient-mappings.html">src</a>
+)
+      </li>
+      <li>
+Schulungs-IG - Local Development build (v0.1.0) built by the FHIR (HL7&reg; FHIR&reg; Standard) Build Tools. See the Directory of published versions (        <a href="toc.html">src</a>
+)
+      </li>
+    </ul>
+    <h2>External References</h2>
+    <table class="grid">
+      <tr>
+        <th>
+          <b>Type</b>
+        </th>
+        <th>
+          <b>Reference</b>
+        </th>
+        <th>
+          <b>Content</b>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <a href="en/Patient-PatientExample.change.history.html">web</a>
+        </td>
+        <td>
+          <a href="https://gefyra.info/">gefyra.info</a>
+        </td>
+        <td>
+
+
+
+
+          IG &copy; 2026+           <a style="color:var(--footer-hyperlink-text-color)" href="https://gefyra.info/">Gefyra GmbH</a>
+.  
+          Package info.gefyra.training#0.1.0 based on           <a style="color: var(--footer-hyperlink-text-color)" href="http://hl7.org/fhir/R4/">FHIR 4.0.1</a>
+.
+          Generated 
+            <span title="2026-11-27 10:54:00 +0000">
+    2026-11-27
+  </span>
+
+
+                    <br/>
+
+                    <span style="color: var(--footer-highlight-text-color)">
+
+                      Links: <a style="color: var(--footer-hyperlink-text-color)" href="toc.html">Table of Contents</a> |
+                 <a style="color: var(--footer-hyperlink-text-color)" href="../qa.html">QA Report</a>
+                 
+                
+          
+          </span>
+
+        
+        </td>
+      </tr>
+    </table>
+    <h2>Internal Images</h2>
+    <table class="grid">
+      <tr>
+        <td>
+tree-filter.png          <br/>
+          <img src="tree-filter.png" alt="tree-filter.png" width="600px" height="auto"/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

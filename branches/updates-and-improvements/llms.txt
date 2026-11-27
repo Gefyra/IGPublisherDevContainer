@@ -1,0 +1,22 @@
+# info.gefyra.training#0.1.0: Schulungs-IG(en)
+
+## Pages
+
+* [Home](en/index.md)
+* [Downloads](en/downloads.md)
+* [Changelog](en/changelog.md)
+* [Artifacts Summary](en/artifacts.md)
+
+## Resources
+
+### Resource Profiles
+
+* [MyPatient](en/StructureDefinition-MyPatient.md)
+
+### ImplementationGuides
+
+* [Schulungs-IG](en/ImplementationGuide-info.gefyra.training.md)
+
+### Examples
+
+* [PatientExample (Patient)](en/Patient-PatientExample.md)
