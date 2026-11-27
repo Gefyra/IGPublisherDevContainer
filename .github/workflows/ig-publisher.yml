@@ -108,6 +108,14 @@ jobs:
           # only errors do. Warnings meant to stay are silenced in
           # input/ignoreWarnings.txt, which the publisher applies before this.
           include: warnings
+          # Known errors outside this IG, each as filename|messageId|details|location.
+          # fhir2.base.template (build of 2026-11-26) sets the IG parameter
+          # path-image-source, which the ig-parameters value set of
+          # hl7.fhir.uv.tools (1.3.0) doesn't list yet. Remove these two lines
+          # once a newer tools package knows the code.
+          filters: |
+            |UNABLE_TO_INFER_CODESYSTEM|*path-image-source*|
+            |Terminology_TX_NoValid_16|*path-image-source*|
           # Written even when the step fails, so the PR comment below can
           # report the errors that caused the failure. Kept explicit because
           # that step reads the very same path.
