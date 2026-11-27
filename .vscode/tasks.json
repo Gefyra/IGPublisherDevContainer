@@ -17,7 +17,7 @@
     {
       "label": "IG Publisher: Full Build",
       "type": "shell",
-      "command": "./_genonce.sh -no-sushi",
+      "command": "./_genonce.sh -no-sushi -allow-committed-scripts",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -74,6 +74,30 @@
       "problemMatcher": []
     },
     {
+      "label": "Add Custom Template",
+      "type": "shell",
+      "command": "ig-add-template",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Add Example Page",
+      "type": "shell",
+      "command": "ig-add-example-page",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Git: Commit & Push",
       "type": "shell",
       "command": "ig-commit \"${input:commitMessage}\"",
@@ -89,6 +113,18 @@
       "label": "Download: IG Package",
       "type": "shell",
       "command": "ig-package",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Download: AI Package",
+      "type": "shell",
+      "command": "ig-ai-package",
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -114,8 +150,8 @@
     {
       "id": "commitMessage",
       "type": "promptString",
-      "description": "Commit-Nachricht eingeben",
-      "default": "Änderungen gespeichert"
+      "description": "Commit message",
+      "default": "Save changes"
     }
   ]
 }

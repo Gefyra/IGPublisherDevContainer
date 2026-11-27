@@ -7,6 +7,9 @@ Thumbs.db
 /template
 # artifact of the "Download: JSON Resources" task
 json-resources.zip
+# written by the IG Publisher when pages contain conformance statements
+/Requirements-fromNarrative.json
 
 # IDE
 .idea/
+*.iml

@@ -64,6 +64,8 @@ In your new repository, go to **Settings → Pages** and set the source to the `
 
 6. **Read the report.** `output/qa.html` lists every validation message. It is the file to check before sharing anything.
 
+**Writing in German?** The IG Publisher assumes English and renders the text it generates — headings, labels, table headers — in English. To switch, uncomment `parameters:` and the `i18n-default-lang: de` line beneath it in `sushi-config.yaml`. Other language codes work the same way.
+
 New to FHIR Shorthand? [FSH School](https://fshschool.org/) is the place to learn it.
 
 ## Everyday workflow
@@ -77,15 +79,26 @@ Run tasks with `F1` → `Tasks: Run Task`. The default build task is **"IG Publi
 | **FHIR Package: Download and Snapshot Dependencies** | Resolves the dependencies from `sushi-config.yaml` |
 | **Update IG Publisher** | Fetches the current IG Publisher release |
 | **Serve IG Locally** | Serves `output/` for preview |
+| **Add Custom Template** | Copies a starter template with logo, colors and examples to `custom-template/` and switches `ig.ini` to it — see [Your own look](#your-own-look) |
+| **Add Example Page** | Adds a page with working examples of IG Publisher features — links, conformance statements, diagrams, fragments — and links it in the menu |
 | **Git: Commit & Push** | Stages everything, commits, and pushes the branch |
 | **Download: IG Package** | Points at `output/full-ig.zip` |
+| **Download: AI Package** | Points at `output/<lang>/ai.zip`, the guide as Markdown for AI tools |
 | **Download: JSON Resources** | Packs `fsh-generated/resources/*.json` into a ZIP |
 
-The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
+The tasks call commands the container image ships (`ig-update-publisher`, `ig-commit`, `ig-package`, `ig-ai-package`, `ig-json-resources`). That keeps `tasks.json` stable: when the logic behind them changes, it arrives with the next image and this file stays untouched.
 
 **Git: Commit & Push** stages everything in one go, which is what makes it a single button. To pick individual files or read a diff before committing, use VS Code's **Source Control** panel instead — the task lists what it staged, but does not let you change it.
 
 Prefer the terminal? `sushi`, `./_genonce.sh`, `fhir-pkg-tool --sushi-deps-file sushi-config.yaml` and `python3 -m http.server 8080` do the same jobs.
+
+## Your own look
+
+By default the IG uses the publisher's standard template (`template = fhir2.base.template#current` in `ig.ini`). The **Add Custom Template** task gives it a template of its own instead: it copies a starter into `custom-template/` and points `ig.ini` at it. The starter builds on the template the IG used so far and only adds to it — the Gefyra logo in the header, colors from the logo, an extra footer link and a note-box include for pages. The task also adds a page, **Template** in the menu, that shows these features live. `custom-template/README.md` explains each file and what to try next.
+
+For the IG Publisher's own features, independent of any template, the **Add Example Page** task adds **IG Features** to the menu: links to resources, conformance statements, Mermaid diagrams, parts of examples, generated tables and lists, each with the source next to the result. It uses a profile and an example of your IG, so run SUSHI first.
+
+Once `custom-template/` or the page exists, the tasks leave it alone and just say so. To go back, restore the `template` line in `ig.ini` (the task keeps the old one as a comment) and delete the folder.
 
 ## Publishing
 
@@ -107,6 +120,7 @@ Worth knowing:
 - The branch name is used verbatim as a path: `feature/x` becomes `branches/feature/x/`.
 - Deleting a branch removes its preview, immediately and again in a weekly sweep. The "Clean up branch previews" workflow can also be started by hand via "Run workflow".
 - **`full-ig.zip` is not published.** It changes wholesale on every build and nothing on the site links to it. The package tarballs (`package*.tgz`) do stay, so a consuming IG can point at a branch build or a released version.
+- The **Downloads** page (`input/pagecontent/downloads.md`) links the package, the definitions and examples, and `ai.zip` — the guide as Markdown for AI tools. It also carries the dependency table, cross-version analysis and IP statements the publisher expects every IG to show.
 - `gh-pages` is rewritten as a single root commit on every publish. Pages serves only the current tree, and keeping history would retain every past build's binaries forever.
 - Pages needs a few minutes after the build before a change is visible.
 
@@ -115,7 +129,7 @@ Worth knowing:
 On every start the container reports what you are building with:
 
 ```
-IG Publisher 2.3.2 (from the image, 2026-08-14)
+IG Publisher 3.0.6 (from the image, 2026-11-25)
 ```
 
 Once the jar is older than 14 days it adds a hint. There are two ways to update, and which one is right depends on what you need.
@@ -141,9 +155,11 @@ This also brings SUSHI, `fhir-pkg-tool`, the extensions and the container logic 
 
 ### Where the publisher jar lives
 
-`input-cache/publisher.jar` is normally a **symlink** to the jar inside the image (`/opt/ig/publisher.jar`). That way it exists once instead of twice, and a rebuild moves you to the new image's version automatically.
+The build scripts look for the jar in `input-cache/publisher.jar` first and in `../publisher.jar` second. The container links the latter — `/workspaces/publisher.jar`, next to your IG's folder — to the jar inside the image (`/opt/ig/publisher.jar`). That way it exists once instead of twice, and a rebuild moves you to the new image's version automatically.
 
-The "Update IG Publisher" task replaces the link with a real file, which it has to: the image itself cannot be written to. You then use roughly 440 MB instead of 220 MB for a while. Once the image has caught up, the next rebuild swaps the copy back for the link and frees the space again.
+The link sits outside the IG's folder on purpose: IG Publisher 3.x refuses to build an IG whose folder holds a symbolic link leading out of it. Older versions of the image linked `input-cache/publisher.jar`; a rebuild removes that link.
+
+The "Update IG Publisher" task puts a real file into `input-cache/`, which then takes precedence. You use roughly 440 MB instead of 220 MB for a while. Once the image has caught up, the next rebuild removes the copy and frees the space again.
 
 ## Reference
 
@@ -154,7 +170,7 @@ The "Update IG Publisher" task replaces the link with a real file, which it has 
 | [IG Publisher](https://confluence.hl7.org/display/FHIR/IG+Publisher+Documentation) | Builds the Implementation Guide |
 | [SUSHI](https://fshschool.org/docs/sushi/) | Compiles FHIR Shorthand into resources |
 | `fhir-pkg-tool` | Downloads and snapshots dependencies |
-| Java 21, Node 20, Ruby + Jekyll | Runtimes the publisher needs |
+| Java 21, Node 24, Ruby + Jekyll | Runtimes the publisher needs |
 | `python3` | Local preview server |
 | `zip` / `unzip`, `git`, `curl`, `sudo` | Everyday tools |
 
@@ -193,7 +209,18 @@ Make sure Docker is running, then try `Dev Containers: Rebuild Container`. The D
 
 ### The build fails
 
-`output/qa.html` holds the validation report and is the first place to look. Known, accepted messages belong in `input/ignoreWarnings.txt`. If the publisher itself looks like the problem, run the **"Update IG Publisher"** task.
+`output/qa.html` holds the validation report and is the first place to look. Known, accepted messages belong in `input/ignoreWarnings.txt` (see the next section). If the publisher itself looks like the problem, run the **"Update IG Publisher"** task.
+
+### Messages you have checked and accept
+
+`input/ignoreWarnings.txt` lists messages that are known and fine. Each entry is a line with the message text, below a line starting with `# ` that says why. `%` at the start or end matches any text there, so `%some-code%` matches every message containing `some-code`, in whatever language the report is in.
+
+- **Warnings and information** that match an entry disappear from the report. Under "Suppressed Messages" the QA report lists every entry with how often it matched, so a stale one shows up as "(0 uses)".
+- **Errors** can't be hidden. The report keeps them but shows the reason next to each, as "Editor's Comment".
+
+The pipeline fails on every error that is left in the report. For an error that is known and not the IG's fault, the "Check IG validation results" step in `.github/workflows/ig-publisher.yml` has a `filters` list as well.
+
+The file ships with an example of both. The fhir2 template sets the IG parameter `path-image-source`, which the HL7 tools package doesn't know yet, so every IG gets four errors that aren't its own. `ignoreWarnings.txt` comments them in the report, and the workflow filters exactly those. Both say to remove them once the entry shows "(0 uses)".
 
 ### Port 8080 is taken
 
@@ -223,7 +250,7 @@ In Codespaces the question does not arise — forwarding goes through the Codesp
 
 ### "Update IG Publisher" fails with `curl: (23)`
 
-The task still calls `_updatePublisher.sh` directly instead of `ig-update-publisher`. `curl` then writes through the symlink into the read-only image. Nothing is lost; set the task's command in `.vscode/tasks.json` to:
+The task still calls `_updatePublisher.sh` directly instead of `ig-update-publisher`. `curl` then writes through the link `../publisher.jar` into the read-only image. Nothing is lost; set the task's command in `.vscode/tasks.json` to:
 
 ```json
 "command": "ig-update-publisher"
@@ -233,9 +260,9 @@ The task still calls `_updatePublisher.sh` directly instead of `ig-update-publis
 
 A plain rebuild may reuse the cached image. Use **Rebuild Without Cache**, or **Full Rebuild Container** in Codespaces — or run the **"Update IG Publisher"** task for an immediately current publisher.
 
-### `input-cache/publisher.jar` is a dead link on the host
+### "symbolic link to somewhere outside it: input-cache/publisher.jar"
 
-Expected: the link points at a path inside the container. It resolves inside the dev container, and `input-cache/` is in `.gitignore` anyway.
+The container was created from an image older than this fix, which linked the publisher into `input-cache/`. Rebuild the container, or run the **"Update IG Publisher"** task, which replaces the link with a real file.
 
 ## Contributing
 
